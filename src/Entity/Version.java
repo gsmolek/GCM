@@ -1,5 +1,5 @@
 package Entity;
-/*
+/**
  * TO-DO:
  * 1.Create City Class
  * 2.create getVersionRequest method- what it means?
