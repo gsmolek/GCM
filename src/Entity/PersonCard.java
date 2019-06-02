@@ -16,9 +16,7 @@ public class PersonCard {
 		return result;
 	}
 
-	/**
-	 * @param
-	 */
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -43,12 +41,6 @@ public class PersonCard {
 		return true;
 	}
 	
-	/**
-	 * 
-	 * @param person_name
-	 * @param phone_number
-	 * @param email_address
-	 */
 	public PersonCard(String person_name, int phone_number, String email_address) {
 	      super( );
 	      this.person_name = person_name;
