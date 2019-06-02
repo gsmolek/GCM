@@ -61,9 +61,10 @@ public class mysqlConnection {
 	
 	public void createTables()
 	{
-	
-		
-		
+		SQLstatment = conn.createStatement();
+		SQLstatment.executeUpdate("CREATE TABLE Tours("+"TourID INT PRIMARY KEY,"
+				+ "TourName STRING,"
+				+ "");");
 	}
 	
 	/*
