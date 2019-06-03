@@ -15,7 +15,7 @@ public class dbConnector {
         
         try 
         {
-        	String dbName = "world";
+        	String dbName = "gsm";
         	String userName = "root";
         	String password = "";
         	con = DriverManager.getConnection("jdbc:mysql://localhost/"+dbName+"?serverTimezone=IST",userName,password);
