@@ -106,10 +106,6 @@
             <Font name="System Bold" size="36.0" />
          </font>
       </Label>
-      <ImageView fitHeight="153.0" fitWidth="195.0" layoutX="790.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../../../../Desktop/logoSecond.gif" />
-         </image>
-      </ImageView>
+      <ImageView fx:id="image" fitHeight="153.0" fitWidth="195.0" layoutX="790.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" />
    </children>
 </AnchorPane>

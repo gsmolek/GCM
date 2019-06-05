@@ -16,6 +16,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import serverConnection.EchoServer;
 
 public class GUIcontroller implements Initializable{
@@ -37,6 +39,8 @@ public class GUIcontroller implements Initializable{
 	private Label ActiveLabel;
 	@FXML
 	private Label InActiveLabel;
+	@FXML
+	private ImageView image;
 	
 	private InetAddress inetAddress;
 	private EchoServer server;
@@ -102,12 +106,12 @@ public class GUIcontroller implements Initializable{
 		{
 			int port=server.getPort();
 			try {
-				
+				server.stopListening();
 				server.close();
 				UsingPort.clear();
 			      InActiveLabel.setVisible(true);
 			      ActiveLabel.setVisible(false);
-			} catch (IOException e) {
+		} catch (IOException e) {
 				System.out.println("Can not close Port "+port);
 			}
 		}
@@ -131,6 +135,8 @@ public class GUIcontroller implements Initializable{
 			ServerName.setEditable(false);
 			serverIP.setEditable(false);
 			ServerCon.setEditable(false);
+			Image vs=new Image("/GUI/logoSecond.gif");
+			image.setImage(vs);
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 			System.out.println("Can't access to IP Address");
