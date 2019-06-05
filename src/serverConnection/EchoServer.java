@@ -8,8 +8,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import GUI.Main;
 import ocsf.server.*;
-
+import GUI.*;
 /**
  * This class overrides some of the methods in the abstract 
  * superclass in order to give more functionality to the server.
@@ -28,10 +29,11 @@ public class EchoServer extends AbstractServer
    * The default port to listen on.
    */
   final public static int DEFAULT_PORT = 5550;
-  
+  private static String portFromUser;
   //Constructors ****************************************************
   
-  /**
+
+/**
    * Constructs an instance of the echo server.
    *
    * @param port The port number to connect on.
@@ -123,16 +125,19 @@ public class EchoServer extends AbstractServer
    *          if no argument is entered.
    */
  
-  public static void main(String[] args) 
+  public static void startServer() 
   {
-    int port = 0; //Port to listen on
+
+     int port = 0; //Port to listen on
     try
     {
-      port = Integer.parseInt(args[0]); //Get port from command line
+      port = Integer.parseInt(portFromUser); //Get port from command line
+      System.out.println("Created Port :"+port);
     }
     catch(Throwable t)
     {
       port = DEFAULT_PORT; //Set port to 5555
+      System.out.println("Created Port :"+port);
     }
 	
     EchoServer sv = new EchoServer(port);
