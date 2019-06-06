@@ -30,6 +30,7 @@ public class EchoServer extends AbstractServer
    */
   final public static int DEFAULT_PORT = 5550;
   private static String portFromUser;
+  mysqlConnection MySQLConnection=new mysqlConnection();
   //Constructors ****************************************************
   
 
@@ -52,11 +53,24 @@ public class EchoServer extends AbstractServer
    * @param msg The message received from the client.
    * @param client The connection from which the message originated.
    */
-  mysqlConnection MySQLConnection=new mysqlConnection();
   public void handleMessageFromClient
     (Object msg, ConnectionToClient client)
   {
-	  	
+	  ArrayList<Object> getArrayFromClient=(ArrayList<Object>)msg;
+	  String operation = (String)getArrayFromClient.get(0);
+	  /**
+	   * 1-edit a SQL table
+	   * 2-get info from SQL table
+	   * 3-request of a file
+	   * */
+	  switch(operation)	
+	  {
+	  	case "1":
+	  	case "2":
+	  	case "3":
+		  
+		
+	  }
 	  /*
 	  	System.out.println(msg);
 	  	
