@@ -65,24 +65,24 @@ public class mysqlConnection {
 		 *@param query_to_add_new_table - string to add tables using query
 		 *
 		 */
-		String query_to_add_new_table = "CREATE TABLE gcm.Tours (Tour_number INTEGER not null, General_description VARCHAR(255), PRIMARY KEY(Tour_number))";
+		String query_to_add_new_table = "CREATE TABLE IF NOT EXISTS gcm.Tours (Tour_number INTEGER not null, General_description VARCHAR(255), PRIMARY KEY(Tour_number))";
 		try {
 			Statement SQLstatment;
 			SQLstatment = conn.createStatement();
 			SQLstatment.executeUpdate(query_to_add_new_table);
 	     // is name the key in this table ask!! //
-	     query_to_add_new_table = "CREATE TABLE `gcm`.`placeofintrest` (`name` VARCHAR(255) not null, `Classification` VARCHAR(255),`shortExplanation` VARCHAR(255) ,`accessibleToSpecialNeeds` VARCHAR(255),`Tour_number` INTEGER , PRIMARY KEY(name,Tour_number),FOREIGN KEY (`Tour_number`)  REFERENCES `gcm`.`tours` (`Tour_number`))";
+	     query_to_add_new_table = "CREATE TABLE IF NOT EXISTS `gcm`.`placeofintrest` (`name` VARCHAR(255) not null, `Classification` VARCHAR(255),`shortExplanation` VARCHAR(255) ,`accessibleToSpecialNeeds` VARCHAR(255),`Tour_number` INTEGER , PRIMARY KEY(name,Tour_number),FOREIGN KEY (`Tour_number`)  REFERENCES `gcm`.`tours` (`Tour_number`))";
 		SQLstatment.executeUpdate(query_to_add_new_table);
-		query_to_add_new_table = "CREATE TABLE `gcm`.`version` (`version_number` INTEGER not null, `description` VARCHAR(255),PRIMARY KEY(version_number))";
+		query_to_add_new_table = "CREATE TABLE IF NOT EXISTS `gcm`.`version` (`version_number` INTEGER not null, `description` VARCHAR(255),PRIMARY KEY(version_number))";
 		SQLstatment.executeUpdate(query_to_add_new_table);
-		query_to_add_new_table = "CREATE TABLE `gcm`.`city` (`name` VARCHAR(255) not null, `numberOfViews` VARCHAR(255),PRIMARY KEY(name))";
+		query_to_add_new_table = "CREATE TABLE IF NOT EXISTS `gcm`.`city` (`name` VARCHAR(255) not null, `numberOfViews` VARCHAR(255),PRIMARY KEY(name))";
 		SQLstatment.executeUpdate(query_to_add_new_table);
-		query_to_add_new_table = "CREATE TABLE `gcm`.`versionOfMapCollection` (`confirmedVersion` VARCHAR(255),`version_number` INTEGER, FOREIGN KEY (`version_number`)  REFERENCES `gcm`.`version` (`version_number`))";
+		query_to_add_new_table = "CREATE TABLE IF NOT EXISTS `gcm`.`versionOfMapCollection` (`confirmedVersion` VARCHAR(255),`version_number` INTEGER, FOREIGN KEY (`version_number`)  REFERENCES `gcm`.`version` (`version_number`))";
 		SQLstatment.executeUpdate(query_to_add_new_table);
-		query_to_add_new_table = "CREATE TABLE `gcm`.`placeToVisitByOrder` (`visitingTime` VARCHAR(255),`Tour_number` INTEGER,`name` VARCHAR(255), FOREIGN KEY (`Tour_number`)  REFERENCES `gcm`.`Tours` (`Tour_number`),FOREIGN KEY (`name`)  REFERENCES `gcm`.`placeofintrest` (`name`),PRIMARY KEY(name,Tour_number))";
+		query_to_add_new_table = "CREATE TABLE IF NOT EXISTS `gcm`.`placeToVisitByOrder` (`visitingTime` VARCHAR(255),`Tour_number` INTEGER,`name` VARCHAR(255), FOREIGN KEY (`Tour_number`)  REFERENCES `gcm`.`Tours` (`Tour_number`),FOREIGN KEY (`name`)  REFERENCES `gcm`.`placeofintrest` (`name`),PRIMARY KEY(name,Tour_number))";
 		SQLstatment.executeUpdate(query_to_add_new_table);
 		// ask team if there is other fields needed //
-		query_to_add_new_table = "CREATE TABLE `gcm`.`PlaceOfInterestInMap` (`locationInMap` VARCHAR(255),PRIMARY KEY(locationInMap))";
+		query_to_add_new_table = "CREATE TABLE IF NOT EXISTS `gcm`.`PlaceOfInterestInMap` (`locationInMap` VARCHAR(255),PRIMARY KEY(locationInMap))";
 		SQLstatment.executeUpdate(query_to_add_new_table);
 		System.out.println("new PlaceOfInterestInMap table added");
 		
