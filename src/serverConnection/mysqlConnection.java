@@ -54,6 +54,29 @@ public class mysqlConnection {
 	}
 	public void setValueInSqlTable(String query)
 	{
+		Statement sqlStatment;
+		try {
+			sqlStatment = conn.createStatement();
+			sqlStatment.executeQuery(query);
+		} catch (SQLException e) {
+			System.out.println("ERROR-SQL STATMENT:"+query+" "
+					+ "leaded to an error in setValueInSqlTable method");
+		}
+		
+	}
+	public ResultSet getValueInSqlTable(String query)
+	{
+		
+		try {
+			Statement sqlStatment = conn.createStatement();
+			ResultSet resultSet = sqlStatment.executeQuery(query);
+			return resultSet;
+		} catch (SQLException e) {
+			System.out.println("ERROR-SQL STATMENT:"+query+" "
+					+ "leaded to an error in getValueInSqlTable method");
+			return null;
+		}
+		
 		
 	}
 	

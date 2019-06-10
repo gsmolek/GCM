@@ -1,9 +1,7 @@
 package serverConnection;
-// This file contains material supporting section 3.7 of the textbook:
-// "Object Oriented Software Engineering" and is issued under the open-source
-// license found at www.lloseng.com 
 
 import java.io.*;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -11,41 +9,23 @@ import java.util.List;
 import GUI.Main;
 import ocsf.server.*;
 import GUI.*;
-/**
- * This class overrides some of the methods in the abstract 
- * superclass in order to give more functionality to the server.
- *
- * @author Dr Timothy C. Lethbridge
- * @author Dr Robert Lagani&egrave;re
- * @author Fran&ccedil;ois B&eacute;langer
- * @author Paul Holden
- * @version July 2000
- */
+
 public class EchoServer extends AbstractServer 
 {
-  //Class variables *************************************************
-  
+
   /**
    * The default port to listen on.
    */
   final public static int DEFAULT_PORT = 5550;
   private static String portFromUser;
   mysqlConnection MySQLConnection=new mysqlConnection();
-  //Constructors ****************************************************
-  
 
-/**
-   * Constructs an instance of the echo server.
-   *
-   * @param port The port number to connect on.
-   */
   public EchoServer(int port) 
   {
     super(port);
   }
 
   
-  //Instance methods ************************************************
   
   /**
    * This method handles any messages received from the client.
@@ -58,18 +38,33 @@ public class EchoServer extends AbstractServer
   {
 	  ArrayList<Object> getArrayFromClient=(ArrayList<Object>)msg;
 	  String operation = (String)getArrayFromClient.get(0);
+	  int arrayLength=getArrayFromClient.size();
 	  /**
 	   * 1-edit a SQL table
 	   * 2-get info from SQL table
 	   * 3-request of a file
+	   * 4-resultset
 	   * */
 	  switch(operation)	
 	  {
 	  	case "1":
+	  	{
+	  		String query=(String)getArrayFromClient.get(arrayLength);
+	  		MySQLConnection.setValueInSqlTable(query);
+	  	}
 	  	case "2":
+	  	{
+	  		String query=(String)getArrayFromClient.get(arrayLength);
+	  		ResultSet resultSet= MySQLConnection.getValueInSqlTable(query);
+	  		ArrayList<Object> toClient =new ArrayList<Object>();
+	  		toClient.add("4");
+	  		toClient.add(resultSet);
+	  		this.sendToAllClients(toClient);
+	  	}
 	  	case "3":
-		  
-		
+	  	{
+	  		
+	  	}
 	  }
 	  /*
 	  	System.out.println(msg);
