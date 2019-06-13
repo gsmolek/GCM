@@ -44,13 +44,24 @@ public class mysqlConnection {
 		try {
 			SQLstatment = conn.createStatement();
 			SQLstatment.executeUpdate("CREATE DATABASE gcm;");
-			conn = DriverManager.getConnection("jdbc:mysql://localhost/gcm?serverTimezone=IST","root","Aa123456");
-			
+			//conn = DriverManager.getConnection("jdbc:mysql://localhost/gcm?serverTimezone=IST","root","Aa123456");
+			connectToSQL();
 				System.out.println("gcm Schema created");
 
 		} catch (SQLException e) {
 			System.out.println("Schema already exists");
+			connectToSQL();
+			
 		}	
+	}
+	public void connectToSQL()
+	{
+		try {
+			conn = DriverManager.getConnection("jdbc:mysql://localhost/gcm?serverTimezone=IST","root","Aa123456");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	public void setValueInSqlTable(String query)
 	{
@@ -88,26 +99,165 @@ public class mysqlConnection {
 		 *@param query_to_add_new_table - string to add tables using query
 		 *
 		 */
-		String query_to_add_new_table = "CREATE TABLE IF NOT EXISTS gcm.Tours (Tour_number INTEGER not null, General_description VARCHAR(255), PRIMARY KEY(Tour_number))";
+		
 		try {
+			String query_to_add_new_table;
 			Statement SQLstatment;
 			SQLstatment = conn.createStatement();
+			
+			query_to_add_new_table = 
+					" CREATE TABLE IF NOT EXISTS `city` (`Id` int(11) NOT NULL AUTO_INCREMENT,`name` varchar(255) DEFAULT NULL, PRIMARY KEY (`Id`)) ;"; 
+					
 			SQLstatment.executeUpdate(query_to_add_new_table);
-	     // is name the key in this table ask!! //
-	     query_to_add_new_table = "CREATE TABLE IF NOT EXISTS `gcm`.`placeofintrest` (`name` VARCHAR(255) not null, `Classification` VARCHAR(255),`shortExplanation` VARCHAR(255) ,`accessibleToSpecialNeeds` VARCHAR(255),`Tour_number` INTEGER , PRIMARY KEY(name,Tour_number),FOREIGN KEY (`Tour_number`)  REFERENCES `gcm`.`tours` (`Tour_number`))";
-		SQLstatment.executeUpdate(query_to_add_new_table);
-		query_to_add_new_table = "CREATE TABLE IF NOT EXISTS `gcm`.`version` (`version_number` INTEGER not null, `description` VARCHAR(255),PRIMARY KEY(version_number))";
-		SQLstatment.executeUpdate(query_to_add_new_table);
-		query_to_add_new_table = "CREATE TABLE IF NOT EXISTS `gcm`.`city` (`name` VARCHAR(255) not null, `numberOfViews` VARCHAR(255),PRIMARY KEY(name))";
-		SQLstatment.executeUpdate(query_to_add_new_table);
-		query_to_add_new_table = "CREATE TABLE IF NOT EXISTS `gcm`.`versionOfMapCollection` (`confirmedVersion` VARCHAR(255),`version_number` INTEGER, FOREIGN KEY (`version_number`)  REFERENCES `gcm`.`version` (`version_number`))";
-		SQLstatment.executeUpdate(query_to_add_new_table);
-		query_to_add_new_table = "CREATE TABLE IF NOT EXISTS `gcm`.`placeToVisitByOrder` (`visitingTime` VARCHAR(255),`Tour_number` INTEGER,`name` VARCHAR(255), FOREIGN KEY (`Tour_number`)  REFERENCES `gcm`.`Tours` (`Tour_number`),FOREIGN KEY (`name`)  REFERENCES `gcm`.`placeofintrest` (`name`),PRIMARY KEY(name,Tour_number))";
-		SQLstatment.executeUpdate(query_to_add_new_table);
-		// ask team if there is other fields needed //
-		query_to_add_new_table = "CREATE TABLE IF NOT EXISTS `gcm`.`PlaceOfInterestInMap` (`locationInMap` VARCHAR(255),PRIMARY KEY(locationInMap))";
-		SQLstatment.executeUpdate(query_to_add_new_table);
-		System.out.println("new PlaceOfInterestInMap table added");
+			System.out.println("city table added");
+			query_to_add_new_table = 
+					"CREATE TABLE IF NOT EXISTS `download` (\r\n" + 
+					"  `date` date NOT NULL DEFAULT '0000-00-00',\r\n" + 
+					"  `user_id` int(11) unsigned NOT NULL DEFAULT '0',\r\n" + 
+					"  `collaction_id` int(11) unsigned NOT NULL DEFAULT '0',\r\n" + 
+					"  `time` time NOT NULL DEFAULT '00:00:00'\r\n" + 
+					") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;" + 
+					"";
+			SQLstatment.executeUpdate(query_to_add_new_table);
+			System.out.println("download table added");
+			query_to_add_new_table = 
+					"CREATE TABLE IF NOT EXISTS `employee` (\r\n" + 
+					"  `employee_no` int(11) unsigned NOT NULL DEFAULT '0',\r\n" + 
+					"  `first_name` varchar(255) NOT NULL DEFAULT '',\r\n" + 
+					"  `last_name` varchar(255) NOT NULL DEFAULT '',\r\n" + 
+					"  `job_title` varchar(255) NOT NULL DEFAULT '',\r\n" + 
+					"  `password` varchar(255) NOT NULL DEFAULT '',\r\n" + 
+					"  `user_name` varchar(255) NOT NULL DEFAULT '',\r\n" + 
+					"  PRIMARY KEY (`employee_no`),\r\n" + 
+					"  UNIQUE KEY `user_name` (`employee_no`)\r\n" + 
+					") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;" + 
+					"";
+			SQLstatment.executeUpdate(query_to_add_new_table);
+			System.out.println("EMPLOYEE table added");
+			query_to_add_new_table =  
+					"CREATE TABLE IF NOT EXISTS`map` (\r\n" + 
+					"  `Id` int(11) NOT NULL AUTO_INCREMENT,\r\n" + 
+					"  `city_id` int(11) unsigned NOT NULL DEFAULT '0',\r\n" + 
+					"  `description` varchar(255) DEFAULT NULL,\r\n" + 
+					"  `id_collaction` varchar(255) DEFAULT NULL,\r\n" + 
+					"  `path` varchar(255) NOT NULL DEFAULT '',\r\n" + 
+					"  PRIMARY KEY (`Id`)\r\n" + 
+					") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;" + 
+					"";
+			SQLstatment.executeUpdate(query_to_add_new_table);
+			System.out.println("map table added");
+			query_to_add_new_table =
+					"CREATE TABLE IF NOT EXISTS `map_collection` (\r\n" + 
+					"  `Id` int(11) NOT NULL AUTO_INCREMENT,\r\n" + 
+					"  `vertion` double(4,1) unsigned NOT NULL DEFAULT '0.0',\r\n" + 
+					"  `price` int(11) unsigned NOT NULL DEFAULT '0',\r\n" + 
+					"  `approved` tinyint(1) unsigned NOT NULL DEFAULT '0',\r\n" + 
+					"  PRIMARY KEY (`Id`)\r\n" + 
+					") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;" + 
+					"";
+			SQLstatment.executeUpdate(query_to_add_new_table);
+			System.out.println("map_collection table added");
+			query_to_add_new_table =  
+					"CREATE TABLE IF NOT EXISTS `map_site` (\r\n" + 
+					"  `map_id` int(11) unsigned NOT NULL DEFAULT '0',\r\n" + 
+					"  `site_id` int(11) unsigned NOT NULL DEFAULT '0'\r\n" + 
+					") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;" + 
+					"";
+			SQLstatment.executeUpdate(query_to_add_new_table);
+			System.out.println("map_site table added");
+			query_to_add_new_table =  
+					"CREATE TABLE IF NOT EXISTS `purchases` (\r\n" + 
+					"  `user_id` int(11) unsigned NOT NULL DEFAULT '0',\r\n" + 
+					"  `collaction_id` int(11) unsigned NOT NULL DEFAULT '0',\r\n" + 
+					"  `date_buy` date NOT NULL DEFAULT '0000-00-00',\r\n" + 
+					"  `date_end` date NOT NULL DEFAULT '0000-00-00',\r\n" + 
+					"  `type_of_purchases` tinyint(1) unsigned NOT NULL DEFAULT '0',\r\n" + 
+					"  `renew` tinyint(1) unsigned NOT NULL DEFAULT '0'\r\n" + 
+					") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;" + 
+					"";
+			SQLstatment.executeUpdate(query_to_add_new_table);
+			System.out.println("purchases table added");
+			query_to_add_new_table =  
+					"CREATE TABLE IF NOT EXISTS `site` (\r\n" + 
+					"  `Id` int(11) NOT NULL AUTO_INCREMENT,\r\n" + 
+					"  `type` varchar(255) NOT NULL DEFAULT '',\r\n" + 
+					"  `description` varchar(255) NOT NULL DEFAULT '',\r\n" + 
+					"  `accessible` tinyint(1) unsigned NOT NULL DEFAULT '0',\r\n" + 
+					"  `time` double(4,2) unsigned NOT NULL DEFAULT '0.00',\r\n" + 
+					"  `location_x` double unsigned NOT NULL DEFAULT '0',\r\n" + 
+					"  `location_y` double unsigned NOT NULL DEFAULT '0',\r\n" + 
+					"  PRIMARY KEY (`Id`)\r\n" + 
+					") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;" + 
+					"";
+			SQLstatment.executeUpdate(query_to_add_new_table);
+			System.out.println("site table added");
+			query_to_add_new_table = 
+					"CREATE TABLE IF NOT EXISTS `site_tour` (\r\n" + 
+					"  `site_id` int(11) unsigned NOT NULL DEFAULT '0',\r\n" + 
+					"  `tour_id` int(11) unsigned NOT NULL DEFAULT '0'\r\n" + 
+					") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;" + 
+					"";
+			SQLstatment.executeUpdate(query_to_add_new_table);
+			System.out.println("site_tour table added");
+			query_to_add_new_table =  
+					"CREATE TABLE IF NOT EXISTS `tours` (\r\n" + 
+					"  `Id` int(11) NOT NULL AUTO_INCREMENT,\r\n" + 
+					"  `description` varchar(255) DEFAULT NULL,\r\n" + 
+					"  PRIMARY KEY (`Id`)\r\n" + 
+					") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;" + 
+					"";
+			SQLstatment.executeUpdate(query_to_add_new_table);
+			System.out.println("tours table added");
+			
+			query_to_add_new_table =  
+					"CREATE TABLE IF NOT EXISTS`users` (\r\n" + 
+					"  `Id` int(11) NOT NULL AUTO_INCREMENT,\r\n" + 
+					"  `password` varchar(255) NOT NULL DEFAULT '',\r\n" + 
+					"  `first_name` varchar(255) NOT NULL DEFAULT '',\r\n" + 
+					"  `last_name` varchar(255) NOT NULL DEFAULT '',\r\n" + 
+					"  `login` varchar(255) NOT NULL DEFAULT '',\r\n" + 
+					"  `user_name` varchar(255) NOT NULL DEFAULT '',\r\n" + 
+					"  PRIMARY KEY (`Id`),\r\n" + 
+					"  UNIQUE KEY `user_name` (`Id`),\r\n" + 
+					"  UNIQUE KEY `email` (`Id`)\r\n" + 
+					") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;" + 
+					"";
+			SQLstatment.executeUpdate(query_to_add_new_table);
+			System.out.println("users table added");
+			
+			query_to_add_new_table =  
+					"CREATE TABLE IF NOT EXISTS `views` (\r\n" + 
+					"  `user_id` int(11) unsigned NOT NULL DEFAULT '0',\r\n" + 
+					"  `collaction_id` int(11) unsigned NOT NULL DEFAULT '0',\r\n" + 
+					"  `date` date NOT NULL DEFAULT '0000-00-00',\r\n" + 
+					"  `time` time NOT NULL DEFAULT '00:00:00',\r\n" + 
+					"  `map_id` int(11) unsigned NOT NULL DEFAULT '0'\r\n" + 
+					") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;" + 
+					"";
+			SQLstatment.executeUpdate(query_to_add_new_table);
+			System.out.println("VIEWS table added");
+			
+			query_to_add_new_table =  
+					"CREATE TABLE IF NOT EXISTS `employee_card` (\r\n" + 
+					"  `user_id` int(11) unsigned NOT NULL DEFAULT '0',\r\n" + 
+					"  `employee_no` int(11) unsigned NOT NULL DEFAULT '0',\r\n" + 
+					"  `job_title` varchar(255) NOT NULL DEFAULT '',\r\n" + 
+					"  `permission` tinyint(1) NOT NULL DEFAULT '0'\r\n" + 
+					") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;" + 
+					"";
+			SQLstatment.executeUpdate(query_to_add_new_table);
+			System.out.println("EMPLOYEE CARD table added");
+			
+			query_to_add_new_table =  
+					"CREATE TABLE IF NOT EXISTS`user_card` (\r\n" + 
+					"  `email` varchar(255) NOT NULL DEFAULT '',\r\n" + 
+					"  `user_id` int(11) NOT NULL DEFAULT '0',\r\n" + 
+					"  `phone` varchar(255) NOT NULL DEFAULT '',\r\n" + 
+					"  `creditcard` varchar(255) NOT NULL DEFAULT ''\r\n" + 
+					") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;" + 
+					"";
+			SQLstatment.executeUpdate(query_to_add_new_table);
+			System.out.println("USER CARD table added");
 		
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

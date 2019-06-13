@@ -60,7 +60,7 @@ public class EchoServer extends AbstractServer
 	  		toClient.add("4");
 	  		toClient.add(resultSet);
 	  		this.sendToAllClients(toClient);
-	  	}
+	  		}
 	  	case "3":
 	  	{
 	  		
