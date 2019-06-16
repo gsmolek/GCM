@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="607.0" prefWidth="999.0" style="-fx-background-color: #d9edfc;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.GUIcontroller">
+   <children>
+      <Pane layoutX="14.0" layoutY="-65.0" prefHeight="364.0" prefWidth="349.0">
+         <children>
+            <Label layoutX="59.0" layoutY="268.0" text="Select Port" textFill="DARKORANGE">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Label layoutX="59.0" layoutY="217.0" text="Server's IP" textFill="DARKORANGE">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <TextField fx:id="ServerName" layoutX="176.0" layoutY="167.0">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </TextField>
+            <TextField id="ServerIPTextField" fx:id="serverIP" layoutX="176.0" layoutY="216.0">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </TextField>
+            <TextField id="Port" fx:id="PortA1" layoutX="175.0" layoutY="267.0" promptText="Default Port 5550">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </TextField>
+            <Button fx:id="StartBtn" layoutX="87.0" layoutY="338.0" mnemonicParsing="false" onAction="#startButtonAction" prefHeight="40.0" prefWidth="53.0" style="-fx-background-radius: 30; -fx-border-radius: 30; -fx-border-color: #ff8c00;" text="Start" textFill="DARKORANGE">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+            <Button fx:id="StopBtn" layoutX="262.0" layoutY="338.0" mnemonicParsing="false" onAction="#stopButtonAction" prefHeight="40.0" prefWidth="53.0" style="-fx-background-radius: 30; -fx-background-radius: 30; -fx-border-color: #ff8c00; -fx-border-radius: 30;" text="Stop" textFill="DARKORANGE">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+            <Label fx:id="ServerNameLabel" layoutX="57.0" layoutY="169.0" text="Server's Name" textFill="DARKORANGE">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Label layoutX="57.0" layoutY="103.0" prefHeight="42.0" prefWidth="206.0" text="GCM Server" textFill="#3c00ff">
+               <font>
+                  <Font name="Bauhaus 93" size="36.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+      <TextArea id="TextAreaConsole" fx:id="TextA1" layoutX="45.0" layoutY="339.0" prefHeight="200.0" prefWidth="879.0" style="-fx-control-inner-background:#000000; -fx-font-family: Consolas; -fx-highlight-fill: #00ff00; -fx-highlight-text-fill: #000000; -fx-text-fill: #00ff00; ">
+         <font>
+            <Font name="Century Gothic Bold" size="12.0" />
+         </font></TextArea>
+      <Label layoutX="406.0" layoutY="104.0" prefHeight="27.0" prefWidth="149.0" text="Server Connection" textFill="DARKORANGE">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="402.0" layoutY="152.0" text="GCM connection" textFill="DARKORANGE">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <TextField fx:id="ServerCon" layoutX="565.0" layoutY="103.0" text="0">
+         <font>
+            <Font size="14.0" />
+         </font></TextField>
+      <TextField fx:id="GCMCon" layoutX="565.0" layoutY="151.0" text="0">
+         <font>
+            <Font size="14.0" />
+         </font></TextField>
+      <Button fx:id="ClearBtn" layoutX="777.0" layoutY="290.0" mnemonicParsing="false" onAction="#ClearBtn" prefHeight="42.0" prefWidth="114.0" style="-fx-background-radius: 30; -fx-border-radius: 30; -fx-border-color: #ff8c00;" text="Clear Console" textFill="DARKORANGE">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
+      <Label layoutX="406.0" layoutY="207.0" text="Using Port" textFill="DARKORANGE">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <TextField fx:id="UsingPort" layoutX="565.0" layoutY="206.0">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </TextField>
+      <Label fx:id="InActiveLabel" layoutX="416.0" layoutY="547.0" text="InActive" textFill="RED">
+         <font>
+            <Font name="System Bold" size="36.0" />
+         </font>
+      </Label>
+      <Label fx:id="ActiveLabel" layoutX="435.0" layoutY="547.0" text="Active" textFill="#26bc47" visible="false">
+         <font>
+            <Font name="System Bold" size="36.0" />
+         </font>
+      </Label>
+      <ImageView fx:id="image" fitHeight="153.0" fitWidth="195.0" layoutX="790.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" />
+   </children>
+</AnchorPane>
