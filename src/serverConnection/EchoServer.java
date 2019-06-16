@@ -43,10 +43,30 @@ public class EchoServer extends AbstractServer {
 			MySQLConnection.setValueInSqlTable(query);
 		}
 		case "2": {
+			System.out.println("trying to connect via username and password checking if information correct");
 			String query = (String) getArrayFromClient.get(arrayLength - 1);
 			ResultSet resultSet = MySQLConnection.getValueInSqlTable(query);
 			ArrayList<Object> toClient = new ArrayList<Object>();
-			System.out.println(query);
+			toClient.add("2");
+			ArrayList<ArrayList<String>> array= new ArrayList<ArrayList<String>>();
+			ArrayList<String> row ;
+			try {
+				while(resultSet.next())
+				{
+					row= new ArrayList<String>();
+					row.add((resultSet.getString(1)));
+					row.add((resultSet.getString(2)));
+					array.add(row);
+					
+				}
+				System.out.println("correct password and username");
+				toClient.add(array);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				System.out.println("incorrect password and username");
+			}
+			
+			/*System.out.println(query);
 			toClient.add("2");
 			try {
 				if (resultSet.next()) {
@@ -55,11 +75,13 @@ public class EchoServer extends AbstractServer {
 					raw[1] = resultSet.getBytes(2);
 					toClient.add(raw);
 					//System.out.println("raw: "+toClient.get(2));
+					ArrayList<Byte[]> b=new ArrayList<Byte[]>();
+					
 				}
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}
+			}*/
 			this.sendToAllClients(toClient);
 		}
 		case "3": {
