@@ -90,7 +90,17 @@ public class mysqlConnection {
 		
 		
 	}
-	
+	public void  insertIntoSql(String query) {
+		PreparedStatement sqlStatment;
+		try {
+			sqlStatment = conn.prepareStatement(query);
+			sqlStatment.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println("\n"+ e + "\n");
+			System.out.println("ERROR-SQL STATMENT:"+query+" "
+					+ "leaded to an error in insertIntoSql method");
+		}
+	}
 	public void createTables()
 	{
 		/**

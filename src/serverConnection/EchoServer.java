@@ -43,15 +43,16 @@ public class EchoServer extends AbstractServer {
 		String operation = (String) getArrayFromClient.get(0);
 		int arrayLength = getArrayFromClient.size();
 		/**
-		 * 1-edit a SQL table 
+		 * 1-get a file
 		 * 2-get info from SQL table 
-		 * 3-request of a file 
+		 * 3-edit table 
 		 * 4-Error
 		 */
 		switch (operation) {
 		case "1": {
 			String query = (String) getArrayFromClient.get(arrayLength);
 			MySQLConnection.setValueInSqlTable(query);
+			break;
 		}
 		case "2": {
 			String query = (String) getArrayFromClient.get(1);
@@ -92,11 +93,14 @@ public class EchoServer extends AbstractServer {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
+			break;
 		}
-		case "3": {
-
-		}
+		case "3":
+			System.out.println("trying to add new data into table");
+			String query = (String) getArrayFromClient.get(arrayLength - 1);
+			MySQLConnection.insertIntoSql(query);
+			break;
+		
 		}
 		/*
 		 * System.out.println(msg);
