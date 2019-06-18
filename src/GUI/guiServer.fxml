@@ -37,12 +37,7 @@
                   <Font size="14.0" />
                </font>
             </TextField>
-            <Button fx:id="StartBtn" layoutX="87.0" layoutY="338.0" mnemonicParsing="false" onAction="#startButtonAction" prefHeight="40.0" prefWidth="53.0" style="-fx-background-radius: 30; -fx-border-radius: 30; -fx-border-color: #ff8c00;" text="Start" textFill="DARKORANGE">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Button>
-            <Button fx:id="StopBtn" layoutX="262.0" layoutY="338.0" mnemonicParsing="false" onAction="#stopButtonAction" prefHeight="40.0" prefWidth="53.0" style="-fx-background-radius: 30; -fx-background-radius: 30; -fx-border-color: #ff8c00; -fx-border-radius: 30;" text="Stop" textFill="DARKORANGE">
+            <Button fx:id="StartBtn" layoutX="132.0" layoutY="344.0" mnemonicParsing="false" onAction="#startButtonAction" prefHeight="40.0" prefWidth="261.0" style="-fx-background-radius: 30; -fx-border-radius: 30; -fx-border-color: #ff8c00; -fx-background-color: #b7e8a7;" text="Start" textFill="DARKORANGE">
                <font>
                   <Font size="14.0" />
                </font>
@@ -57,6 +52,11 @@
                   <Font name="Bauhaus 93" size="36.0" />
                </font>
             </Label>
+            <Button fx:id="StopBtn" layoutX="132.0" layoutY="344.0" mnemonicParsing="false" onAction="#stopButtonAction" prefHeight="40.0" prefWidth="261.0" style="-fx-background-radius: 30; -fx-background-radius: 30; -fx-border-color: #ff8c00; -fx-border-radius: 30; -fx-background-color: #ed878f;" text="Stop" visible="false">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
          </children>
       </Pane>
       <TextArea id="TextAreaConsole" fx:id="TextA1" layoutX="45.0" layoutY="339.0" prefHeight="200.0" prefWidth="879.0" style="-fx-control-inner-background:#000000; -fx-font-family: Consolas; -fx-highlight-fill: #00ff00; -fx-highlight-text-fill: #000000; -fx-text-fill: #00ff00; ">
@@ -81,7 +81,7 @@
          <font>
             <Font size="14.0" />
          </font></TextField>
-      <Button fx:id="ClearBtn" layoutX="777.0" layoutY="290.0" mnemonicParsing="false" onAction="#ClearBtn" prefHeight="42.0" prefWidth="114.0" style="-fx-background-radius: 30; -fx-border-radius: 30; -fx-border-color: #ff8c00;" text="Clear Console" textFill="DARKORANGE">
+      <Button fx:id="ClearBtn" layoutX="774.0" layoutY="283.0" mnemonicParsing="false" onAction="#ClearBtn" prefHeight="42.0" prefWidth="114.0" style="-fx-background-radius: 30; -fx-border-radius: 30; -fx-border-color: #ff8c00;" text="Clear Console" textFill="DARKORANGE">
          <font>
             <Font size="14.0" />
          </font>

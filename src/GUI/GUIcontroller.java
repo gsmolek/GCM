@@ -1,12 +1,15 @@
 package GUI;
 
 import java.io.IOException;
+import ServerControllers.*;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.net.InetAddress;
 import java.net.URL;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.concurrent.TimeUnit;
 
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -41,11 +44,32 @@ public class GUIcontroller implements Initializable{
 	private Label InActiveLabel;
 	@FXML
 	private ImageView image;
+	@FXML
+	private Button StartBtn;
+	@FXML
+	private Button StopBtn;
 	
 	private InetAddress inetAddress;
-	private EchoServer server;
+	protected EchoServer server;
+	
+	public EchoServer getServer() {
+		return server;
+	}
+
 	boolean started=false;
 	final public static int DEFAULT_PORT = 5550;
+	private ArrayList<ClientInformation> messageList;
+	
+	public ArrayList<ClientInformation> getMessageList() {
+		return messageList;
+	}
+	public void setMessageList(ArrayList<ClientInformation> messageList) {
+		this.messageList = messageList;
+	}
+	public void addToMessageList(ClientInformation clientInformation)
+	{
+		this.messageList.add(clientInformation);
+	}
 	public TextArea getTextA1() {
 		return TextA1;
 	}
@@ -81,6 +105,11 @@ public class GUIcontroller implements Initializable{
 	      started=true;
 	      InActiveLabel.setVisible(false);
 	      ActiveLabel.setVisible(true);
+	      GUIthread n =new GUIthread(this);
+	      RenewSubscriptionController a=new RenewSubscriptionController(this,server.getMySQLConnection());
+	      a.start();
+	      
+
 	    } 
 	    catch (Exception ex) 
 	    {
@@ -89,19 +118,18 @@ public class GUIcontroller implements Initializable{
 	}
 	public void countConnections()
 	{
-		while(true)
-		{
 			ServerCon.setText(String.valueOf(server.getNumberOfClients()));
-			
-		}
 	}
 	public void startButtonAction(ActionEvent event)
 	{
+		this.StopBtn.setVisible(true);
+		this.StartBtn.setVisible(false);
 		CreateServer();
 	}
 	public void stopButtonAction(ActionEvent event)
 	{
-		
+		this.StopBtn.setVisible(false);
+		this.StartBtn.setVisible(true);
 		if(started)	
 		{
 			int port=server.getPort();
@@ -145,4 +173,16 @@ public class GUIcontroller implements Initializable{
 		createTextField();
 		
 	}
+	public boolean checkIfMeassageListContain(String usernameTocheck)
+	{
+		for(int i=0;i<this.messageList.size();i++)
+		{
+			if(messageList.get(i).getUsername().equals(usernameTocheck))
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+
 }

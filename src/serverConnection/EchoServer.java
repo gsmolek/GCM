@@ -1,8 +1,12 @@
 package serverConnection;
 
+import java.io.IOException;
+import java.net.InetAddress;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
+
+import com.mysql.cj.jdbc.result.ResultSetMetaData;
 
 import ocsf.server.*;
 import GUI.*;
@@ -15,6 +19,10 @@ public class EchoServer extends AbstractServer {
 	final public static int DEFAULT_PORT = 5550;
 	private static String portFromUser;
 	mysqlConnection MySQLConnection = new mysqlConnection();
+
+	public mysqlConnection getMySQLConnection() {
+		return MySQLConnection;
+	}
 
 	public EchoServer(int port) {
 		super(port);
@@ -35,7 +43,10 @@ public class EchoServer extends AbstractServer {
 		String operation = (String) getArrayFromClient.get(0);
 		int arrayLength = getArrayFromClient.size();
 		/**
-		 * 1-edit a SQL table 2-get info from SQL table 3-request of a file 4-resultset
+		 * 1-edit a SQL table 
+		 * 2-get info from SQL table 
+		 * 3-request of a file 
+		 * 4-Error
 		 */
 		switch (operation) {
 		case "1": {
@@ -43,24 +54,45 @@ public class EchoServer extends AbstractServer {
 			MySQLConnection.setValueInSqlTable(query);
 		}
 		case "2": {
-			String query = (String) getArrayFromClient.get(arrayLength - 1);
+			String query = (String) getArrayFromClient.get(1);
 			ResultSet resultSet = MySQLConnection.getValueInSqlTable(query);
 			ArrayList<Object> toClient = new ArrayList<Object>();
+			
+			InetAddress clientDataInformation = (InetAddress)getArrayFromClient.get(2);
+			System.out.println("==========================================================================================");
+			System.out.println(clientDataInformation.getHostName()+"  "+clientDataInformation.getHostAddress());
+			System.out.println("where his Thread IP is  ***"+Thread.currentThread()+"***");
+			System.out.println("Trying to operate the Query:");
+			System.out.println("");
 			System.out.println(query);
+			System.out.println("==========================================================================================");
+			System.out.println("");
 			toClient.add("2");
+			ArrayList<ArrayList<String>> array = new ArrayList<ArrayList<String>>();
+			ArrayList<String> temp = null;
 			try {
-				if (resultSet.next()) {
-					byte[][] raw = new byte[3][];
-					raw[0] = resultSet.getBytes(1);
-					raw[1] = resultSet.getBytes(2);
-					toClient.add(raw);
-					//System.out.println("raw: "+toClient.get(2));
+				ResultSetMetaData rsmd = (ResultSetMetaData) resultSet.getMetaData();
+				
+				int column = rsmd.getColumnCount();
+				while (resultSet.next()) {
+					temp = new ArrayList<String>();
+					for (int i = 1; i <= column; i++) {
+						temp.add(resultSet.getString(i));
+					}
+					array.add(temp);
 				}
+				toClient.add(array);
+
+				Thread thread = Thread.currentThread();
+				((ConnectionToClient)thread).sendToClient(toClient);
+				
 			} catch (SQLException e) {
+				System.out.println("Error getting information into arraylist");
+			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			this.sendToAllClients(toClient);
+			
 		}
 		case "3": {
 

@@ -109,7 +109,6 @@ public class mysqlConnection {
 					" CREATE TABLE IF NOT EXISTS `city` (`Id` int(11) NOT NULL AUTO_INCREMENT,`name` varchar(255) DEFAULT NULL, PRIMARY KEY (`Id`)) ;"; 
 					
 			SQLstatment.executeUpdate(query_to_add_new_table);
-			System.out.println("city table added");
 			query_to_add_new_table = 
 					"CREATE TABLE IF NOT EXISTS `download` (\r\n" + 
 					"  `date` date NOT NULL DEFAULT '0000-00-00',\r\n" + 
@@ -119,7 +118,7 @@ public class mysqlConnection {
 					") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;" + 
 					"";
 			SQLstatment.executeUpdate(query_to_add_new_table);
-			System.out.println("download table added");
+			
 			query_to_add_new_table = 
 					"CREATE TABLE IF NOT EXISTS `employee` (\r\n" + 
 					"  `employee_no` int(11) unsigned NOT NULL DEFAULT '0',\r\n" + 
@@ -133,7 +132,6 @@ public class mysqlConnection {
 					") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;" + 
 					"";
 			SQLstatment.executeUpdate(query_to_add_new_table);
-			System.out.println("EMPLOYEE table added");
 			query_to_add_new_table =  
 					"CREATE TABLE IF NOT EXISTS`map` (\r\n" + 
 					"  `Id` int(11) NOT NULL AUTO_INCREMENT,\r\n" + 
@@ -145,7 +143,7 @@ public class mysqlConnection {
 					") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;" + 
 					"";
 			SQLstatment.executeUpdate(query_to_add_new_table);
-			System.out.println("map table added");
+			
 			query_to_add_new_table =
 					"CREATE TABLE IF NOT EXISTS `map_collection` (\r\n" + 
 					"  `Id` int(11) NOT NULL AUTO_INCREMENT,\r\n" + 
@@ -156,7 +154,7 @@ public class mysqlConnection {
 					") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;" + 
 					"";
 			SQLstatment.executeUpdate(query_to_add_new_table);
-			System.out.println("map_collection table added");
+			
 			query_to_add_new_table =  
 					"CREATE TABLE IF NOT EXISTS `map_site` (\r\n" + 
 					"  `map_id` int(11) unsigned NOT NULL DEFAULT '0',\r\n" + 
@@ -164,7 +162,7 @@ public class mysqlConnection {
 					") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;" + 
 					"";
 			SQLstatment.executeUpdate(query_to_add_new_table);
-			System.out.println("map_site table added");
+			
 			query_to_add_new_table =  
 					"CREATE TABLE IF NOT EXISTS `purchases` (\r\n" + 
 					"  `user_id` int(11) unsigned NOT NULL DEFAULT '0',\r\n" + 
@@ -172,11 +170,13 @@ public class mysqlConnection {
 					"  `date_buy` date NOT NULL DEFAULT '0000-00-00',\r\n" + 
 					"  `date_end` date NOT NULL DEFAULT '0000-00-00',\r\n" + 
 					"  `type_of_purchases` tinyint(1) unsigned NOT NULL DEFAULT '0',\r\n" + 
-					"  `renew` tinyint(1) unsigned NOT NULL DEFAULT '0'\r\n" + 
-					") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;" + 
+					"  `renew` tinyint(1) unsigned NOT NULL DEFAULT '0',\r\n" + 
+					"  `id` int(11) NOT NULL AUTO_INCREMENT,\r\n" + 
+					"  PRIMARY KEY (`id`)\r\n" + 
+					") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;" + 
 					"";
 			SQLstatment.executeUpdate(query_to_add_new_table);
-			System.out.println("purchases table added");
+			
 			query_to_add_new_table =  
 					"CREATE TABLE IF NOT EXISTS `site` (\r\n" + 
 					"  `Id` int(11) NOT NULL AUTO_INCREMENT,\r\n" + 
@@ -190,7 +190,7 @@ public class mysqlConnection {
 					") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;" + 
 					"";
 			SQLstatment.executeUpdate(query_to_add_new_table);
-			System.out.println("site table added");
+			
 			query_to_add_new_table = 
 					"CREATE TABLE IF NOT EXISTS `site_tour` (\r\n" + 
 					"  `site_id` int(11) unsigned NOT NULL DEFAULT '0',\r\n" + 
@@ -198,7 +198,7 @@ public class mysqlConnection {
 					") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;" + 
 					"";
 			SQLstatment.executeUpdate(query_to_add_new_table);
-			System.out.println("site_tour table added");
+			
 			query_to_add_new_table =  
 					"CREATE TABLE IF NOT EXISTS `tours` (\r\n" + 
 					"  `Id` int(11) NOT NULL AUTO_INCREMENT,\r\n" + 
@@ -207,7 +207,7 @@ public class mysqlConnection {
 					") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;" + 
 					"";
 			SQLstatment.executeUpdate(query_to_add_new_table);
-			System.out.println("tours table added");
+			
 			
 			query_to_add_new_table =  
 					"CREATE TABLE IF NOT EXISTS`users` (\r\n" + 
@@ -223,7 +223,7 @@ public class mysqlConnection {
 					") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;" + 
 					"";
 			SQLstatment.executeUpdate(query_to_add_new_table);
-			System.out.println("users table added");
+			
 			
 			query_to_add_new_table =  
 					"CREATE TABLE IF NOT EXISTS `views` (\r\n" + 
@@ -235,7 +235,7 @@ public class mysqlConnection {
 					") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;" + 
 					"";
 			SQLstatment.executeUpdate(query_to_add_new_table);
-			System.out.println("VIEWS table added");
+			
 			
 			query_to_add_new_table =  
 					"CREATE TABLE IF NOT EXISTS `employee_card` (\r\n" + 
@@ -246,18 +246,19 @@ public class mysqlConnection {
 					") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;" + 
 					"";
 			SQLstatment.executeUpdate(query_to_add_new_table);
-			System.out.println("EMPLOYEE CARD table added");
+			
 			
 			query_to_add_new_table =  
-					"CREATE TABLE IF NOT EXISTS`user_card` (\r\n" + 
+					"CREATE TABLE IF NOT EXISTS `user_card` (\r\n" + 
 					"  `email` varchar(255) NOT NULL DEFAULT '',\r\n" + 
 					"  `user_id` int(11) NOT NULL DEFAULT '0',\r\n" + 
 					"  `phone` varchar(255) NOT NULL DEFAULT '',\r\n" + 
-					"  `creditcard` varchar(255) NOT NULL DEFAULT ''\r\n" + 
-					") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;" + 
+					"  `creditcard` varchar(255) NOT NULL DEFAULT '',\r\n" + 
+					"  PRIMARY KEY (`user_id`)\r\n" + 
+					") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;" + 
 					"";
 			SQLstatment.executeUpdate(query_to_add_new_table);
-			System.out.println("USER CARD table added");
+			
 		
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
