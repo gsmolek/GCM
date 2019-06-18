@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 
@@ -24,10 +25,11 @@ public class mysqlConnection {
         {
             conn = DriverManager.getConnection("jdbc:mysql://localhost/?serverTimezone=IST","root","Aa123456");//add password
             //Connection conn = DriverManager.getConnection("jdbc:mysql://192.168.3.68/test","root","Root");
-            
+            System.out.println("***"+LocalDateTime.now().getHour()+":"+LocalDateTime.now().getMinute()+"***");
             System.out.println("SQL connection succeed");
      	} catch (SQLException ex) 
      	    {/* handle any errors*/
+     		System.out.println("***"+LocalDateTime.now().getHour()+":"+LocalDateTime.now().getMinute()+"***");
             System.out.println("SQLException: " + ex.getMessage());
             System.out.println("SQLState: " + ex.getSQLState());
             System.out.println("VendorError: " + ex.getErrorCode());
@@ -46,9 +48,11 @@ public class mysqlConnection {
 			SQLstatment.executeUpdate("CREATE DATABASE gcm;");
 			//conn = DriverManager.getConnection("jdbc:mysql://localhost/gcm?serverTimezone=IST","root","Aa123456");
 			connectToSQL();
+			System.out.println("***"+LocalDateTime.now().getHour()+":"+LocalDateTime.now().getMinute()+"***");
 				System.out.println("gcm Schema created");
 
 		} catch (SQLException e) {
+			System.out.println("***"+LocalDateTime.now().getHour()+":"+LocalDateTime.now().getMinute()+"***");
 			System.out.println("Schema already exists");
 			connectToSQL();
 			
@@ -70,6 +74,7 @@ public class mysqlConnection {
 			sqlStatment = conn.createStatement();
 			sqlStatment.executeQuery(query);
 		} catch (SQLException e) {
+			System.out.println("***"+LocalDateTime.now().getHour()+":"+LocalDateTime.now().getMinute()+"***");
 			System.out.println("ERROR-SQL STATMENT:"+query+" "
 					+ "leaded to an error in setValueInSqlTable method");
 		}
@@ -83,6 +88,7 @@ public class mysqlConnection {
 			ResultSet resultSet = sqlStatment.executeQuery(query);
 			return resultSet;
 		} catch (SQLException e) {
+			System.out.println("***"+LocalDateTime.now().getHour()+":"+LocalDateTime.now().getMinute()+"***");
 			System.out.println("ERROR-SQL STATMENT:"+query+" "
 					+ "leaded to an error in getValueInSqlTable method");
 			return null;
@@ -96,6 +102,7 @@ public class mysqlConnection {
 			sqlStatment = conn.prepareStatement(query);
 			sqlStatment.executeUpdate();
 		} catch (SQLException e) {
+			System.out.println("***"+LocalDateTime.now().getHour()+":"+LocalDateTime.now().getMinute()+"***");
 			System.out.println("\n"+ e + "\n");
 			System.out.println("ERROR-SQL STATMENT:"+query+" "
 					+ "leaded to an error in insertIntoSql method");

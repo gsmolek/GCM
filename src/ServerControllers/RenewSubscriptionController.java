@@ -56,8 +56,8 @@ public class RenewSubscriptionController extends Thread {
 				}
 				
 				System.out.println(array);
-				for(int i=0;i<array.size();i++)
-					sendNotificationToSubscribersNeedToRenew(array.get(i));
+			//	for(int i=0;i<array.size();i++)
+					//sendNotificationToSubscribersNeedToRenew(array.get(i));
 				
 			} catch (SQLException e) {
 				System.out.println("Error getting information into arraylist");
