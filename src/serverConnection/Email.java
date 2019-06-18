@@ -68,6 +68,9 @@ public class Email {
             transport.connect(host, username, password);
             transport.sendMessage(message, message.getAllRecipients());
             transport.close();
+            System.out.println("==========================================================================================");
+            System.out.println("Emails has been sent to all subscription about to end users ");
+            System.out.println("==========================================================================================");
         }
         catch (AddressException ae) {
             ae.printStackTrace();

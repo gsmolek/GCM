@@ -44,8 +44,10 @@ public class RenewSubscriptionController extends Thread {
 			ArrayList<String> temp = null;
 			
 			try {
+				System.out.println("==========================================================================================");
+				System.out.println("***Sending Renews Messages***");
+				System.out.println("==========================================================================================");
 				ResultSetMetaData rsmd = (ResultSetMetaData) resultSet.getMetaData();
-				
 				int column = rsmd.getColumnCount();
 				while (resultSet.next()) {
 					temp = new ArrayList<String>();
@@ -54,10 +56,8 @@ public class RenewSubscriptionController extends Thread {
 					}
 					array.add(temp);
 				}
-				
-				System.out.println(array);
-			//	for(int i=0;i<array.size();i++)
-					//sendNotificationToSubscribersNeedToRenew(array.get(i));
+				for(int i=0;i<array.size();i++)
+					sendNotificationToSubscribersNeedToRenew(array.get(i));
 				
 			} catch (SQLException e) {
 				System.out.println("Error getting information into arraylist");
