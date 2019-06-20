@@ -62,8 +62,10 @@ public class Email {
                 message.addRecipient(Message.RecipientType.TO, toAddress[i]);
             }
 
+            
             message.setSubject(subject);
-            message.setText(body);
+            message.setContent(body, "text/html; charset=utf-8");
+            //message.setText(body);
             Transport transport = session.getTransport("smtp");
             transport.connect(host, username, password);
             transport.sendMessage(message, message.getAllRecipients());

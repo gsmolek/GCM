@@ -37,15 +37,16 @@ public class RenewSubscriptionController extends Thread {
 			} catch (InterruptedException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
-			}	
+			}
+			try {
 			sqlStatment="SELECT email,first_name,last_name FROM purchases p,user_card u,users r WHERE p.user_id=u.user_id AND p.user_id=r.Id AND p.date_end='"+today.now().plusDays(3)+"';";
 			ResultSet resultSet =sqlCommunication.getValueInSqlTable(sqlStatment);
 			ArrayList<ArrayList<String>> array = new ArrayList<ArrayList<String>>();
 			ArrayList<String> temp = null;
 			
-			try {
+			
 				System.out.println("==========================================================================================");
-				System.out.println("***Sending Renews Messages***");
+				System.out.println("***trying to Send Renew Messages***");
 				System.out.println("==========================================================================================");
 				ResultSetMetaData rsmd = (ResultSetMetaData) resultSet.getMetaData();
 				int column = rsmd.getColumnCount();
@@ -61,13 +62,19 @@ public class RenewSubscriptionController extends Thread {
 				
 			} catch (SQLException e) {
 				System.out.println("Error getting information into arraylist");
-			} 
+			} catch (NullPointerException a)
+			{
+				System.out.println("Null pointer Exception in E-Mail - empty E-Mail Table");
+			}
 			
 			try {
 				TimeUnit.DAYS.sleep(1);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 			}
+			System.out.println("==========================================================================================");
+			System.out.println("***will check renews once again in tomorow***");
+			System.out.println("==========================================================================================");
 		}
 		
 		
@@ -83,8 +90,14 @@ public class RenewSubscriptionController extends Thread {
 			System.out.println(a);;
 		}
 		String header="Hello "+array.get(2)+" "+array.get(1)+" i'm from GCM!";
-		String body=""+array.get(2)+" "+array.get(1)+" We dicover that your subscription is about to end in just three days! "
-				+ "if you wish to continue using our application please renew your subscription";
+		String body= "<html>"
+				+ "<head></head>"
+				+ "<body>"
+				+ "<p style=\"font-size:24px;color:blue\"><u> hello "+array.get(2)+" "+array.get(1)+ "!</u></p>"
+				+ "<p style=\"font-size:20px;color:#059124\">We discovered that your subscription is about to end in just <u style=\"color:red;font-size:20px \">three days!</u></p>"
+				+ "<p style=\"font-size:20px;color:#059124\"> if you wish to continue using our application please renew your subscription</p>"
+				+ "</body>"
+				+ "</html>";
 		Email send=new Email(toSend,header,body);
 		send.sendMail();
 	}

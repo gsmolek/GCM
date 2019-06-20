@@ -49,6 +49,9 @@ public class GUIcontroller implements Initializable{
 	@FXML
 	private Button StopBtn;
 	
+    private GUIthread guiThread;
+    RenewSubscriptionController mailThread;
+	
 	private InetAddress inetAddress;
 	protected EchoServer server;
 	
@@ -105,9 +108,9 @@ public class GUIcontroller implements Initializable{
 	      started=true;
 	      InActiveLabel.setVisible(false);
 	      ActiveLabel.setVisible(true);
-	      GUIthread n =new GUIthread(this);
-	      RenewSubscriptionController a=new RenewSubscriptionController(this,server.getMySQLConnection());
-	      a.start();
+	      this.guiThread =new GUIthread(this);
+	      this.mailThread=new RenewSubscriptionController(this,server.getMySQLConnection());
+	      this.mailThread.start();
 	      
 
 	    } 
@@ -128,8 +131,6 @@ public class GUIcontroller implements Initializable{
 	}
 	public void stopButtonAction(ActionEvent event)
 	{
-		this.StopBtn.setVisible(false);
-		this.StartBtn.setVisible(true);
 		if(started)	
 		{
 			int port=server.getPort();
@@ -139,6 +140,10 @@ public class GUIcontroller implements Initializable{
 				UsingPort.clear();
 			      InActiveLabel.setVisible(true);
 			      ActiveLabel.setVisible(false);
+			  	this.StopBtn.setVisible(false);
+				this.StartBtn.setVisible(true);
+				this.guiThread.stop();
+				this.mailThread.stop();
 		} catch (IOException e) {
 				System.out.println("Can not close Port "+port);
 			}
