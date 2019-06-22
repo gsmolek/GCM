@@ -8,9 +8,13 @@ import java.time.LocalDate;
 import java.util.*;
 
 import com.mysql.cj.jdbc.result.ResultSetMetaData;
+import java.io.*;
 
 import ocsf.server.*;
 import GUI.*;
+import ServerControllers.ImageStream;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 public class EchoServer extends AbstractServer {
 
@@ -44,10 +48,11 @@ public class EchoServer extends AbstractServer {
 		String operation = (String) getArrayFromClient.get(0);
 		int arrayLength = getArrayFromClient.size();
 		/**
-		 * 1-get a file
+		 * 1-
 		 * 2-get info from SQL table 
 		 * 3-edit table 
 		 * 4-Error
+		 * 5-get image as Object
 		 */
 		switch (operation) {
 		case "1": {
@@ -98,11 +103,45 @@ public class EchoServer extends AbstractServer {
 		}
 		case "3":
 			System.out.println("trying to add new data into table");
-			String query = (String) getArrayFromClient.get(arrayLength - 1);
+			String query = (String) getArrayFromClient.get(1);
 			MySQLConnection.insertIntoSql(query);
 			break;
-		
+		case "5":
+		{
+			System.out.println("image request to server");
+			try {
+			ImageStream imgToSend=new ImageStream("../gcm/Maps/afula.jpg");
+			String filePath="../gcm/Maps/afula.jpg";
+			
+			File newFile = new File(filePath.trim());
+			
+			byte [] arrayToSend=new byte[(int)newFile.length()];
+			FileInputStream fis = new FileInputStream(newFile);
+			BufferedInputStream bis = new BufferedInputStream(fis);
+			
+			imgToSend.initArray(arrayToSend.length);
+			imgToSend.setSize(arrayToSend.length);
+			
+			
+			bis.read(imgToSend.getImageStreamByteArray(),0,arrayToSend.length);
+			System.out.println("server sends file"+imgToSend.getFileName()+" size: "+imgToSend.getSize() +" to "+client.getName()+" "+client.getInetAddress());
+			
+			ArrayList<Object> toClient = new ArrayList<Object>();
+			toClient.add("5");
+			//toClient.add(imgToSend);
+			toClient.add(a);
+			
+			Thread thread = Thread.currentThread();
+			((ConnectionToClient)thread).sendToClient(toClient);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			
+			break;
 		}
+	}
 		/*
 		 * System.out.println(msg);
 		 * 
