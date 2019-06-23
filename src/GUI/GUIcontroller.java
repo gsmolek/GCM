@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.concurrent.TimeUnit;
 
+import com.sun.accessibility.internal.resources.accessibility;
+
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -121,7 +123,8 @@ public class GUIcontroller implements Initializable{
 	}
 	public void countConnections()
 	{
-			ServerCon.setText(String.valueOf(server.getNumberOfClients()));
+		ArrayList<String> a=server.getListOfCons();
+			ServerCon.setText(String.valueOf(a.size()));
 	}
 	public void startButtonAction(ActionEvent event)
 	{

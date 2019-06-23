@@ -27,6 +27,15 @@ public class EchoServer extends AbstractServer {
 	 */
 	final public static int DEFAULT_PORT = 5550;
 	private static String portFromUser;
+	private static ArrayList<String> listOfCons=new ArrayList<String>();
+	public static ArrayList<String> getListOfCons() {
+		return listOfCons;
+	}
+
+	public static void setListOfCons(ArrayList<String> listOfCons) {
+		EchoServer.listOfCons = listOfCons;
+	}
+
 	mysqlConnection MySQLConnection = new mysqlConnection();
 
 	public mysqlConnection getMySQLConnection() {
@@ -51,7 +60,11 @@ public class EchoServer extends AbstractServer {
 		ArrayList<Object> getArrayFromClient = (ArrayList<Object>) msg;
 		String operation = (String) getArrayFromClient.get(0);
 		int arrayLength = getArrayFromClient.size();
-		InetAddress clientDataInformation;
+		InetAddress clientDataInformation= (InetAddress)getArrayFromClient.get(2);
+		if(!listOfCons.contains(clientDataInformation.getHostAddress()))
+		{
+			listOfCons.add(clientDataInformation.getHostAddress());
+		}
 		/**
 		 * 1-
 		 * 2-get info from SQL table 
@@ -137,6 +150,64 @@ public class EchoServer extends AbstractServer {
 				System.out.println("	No Such file");
 			}
 			
+			
+			break;
+		}
+		case "6":
+		{
+			System.out.println("Enter 6");
+			String email = (String) getArrayFromClient.get(1);
+			System.out.println(email);
+			String sql="SELECT email,first_name,last_name,user_name,password FROM purchases p,user_card u,users r WHERE p.user_id=u.user_id AND p.user_id=r.Id AND u.email='"+email+"';";
+			ArrayList<Object> toClient = new ArrayList<Object>();
+			ResultSet resultSet = MySQLConnection.getValueInSqlTable(sql);
+			
+			ArrayList<ArrayList<String>> array = new ArrayList<ArrayList<String>>();
+			ArrayList<String> temp = null;
+			try {
+				ResultSetMetaData rsmd = (ResultSetMetaData) resultSet.getMetaData();
+				
+				int column = rsmd.getColumnCount();
+				while (resultSet.next()) {
+					temp = new ArrayList<String>();
+					for (int i = 1; i <= column; i++) {
+						temp.add(resultSet.getString(i));
+					}
+					array.add(temp);
+				}
+				System.out.println(array);
+				System.out.println(array.get(0));
+				toClient.add("2");
+				toClient.add(array);
+				Thread thread = Thread.currentThread();
+				((ConnectionToClient)thread).sendToClient(toClient);
+				if(!array.isEmpty() && array!=null)
+				{
+					String[] a=new String[1];
+					a[0]=email;
+					ArrayList<String> toSend=array.get(0);
+					String header=toSend.get(1)+" "+toSend.get(2)+" "+"Password Recovery Request";
+					String body= "<html>"
+							+ "<head></head>"
+							+ "<body>"
+							+ "<p style=\"font-size:24px;color:blue\"><u> hello "+toSend.get(2)+" "+toSend.get(1)+ "!</u></p>"
+							+ "<p style=\"font-size:20px;color:#059124\">Your Username : <u style=\"color:red;font-size:20px \">"+toSend.get(3)+"</u></p>"
+							+ "<p style=\"font-size:20px;color:#059124\">Your Password : <u style=\"color:red;font-size:20px \">"+toSend.get(4)+"</u></p>"
+							+ "</body>"
+							+ "</html>";
+					Email newmail=new Email(a,header,body);
+					newmail.sendMail();
+					System.out.println(a[0]);
+
+				}
+
+			} catch (SQLException e) {
+				System.out.println("	Error getting information into arraylist");
+			}
+			catch(IOException e)
+			{
+				System.out.println("	Can't send to Client");
+			}
 			
 			break;
 		}
