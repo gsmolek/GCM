@@ -5,7 +5,11 @@ import java.net.InetAddress;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
+
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 
 import com.mysql.cj.jdbc.result.ResultSetMetaData;
 import java.io.*;
@@ -47,6 +51,7 @@ public class EchoServer extends AbstractServer {
 		ArrayList<Object> getArrayFromClient = (ArrayList<Object>) msg;
 		String operation = (String) getArrayFromClient.get(0);
 		int arrayLength = getArrayFromClient.size();
+		InetAddress clientDataInformation;
 		/**
 		 * 1-
 		 * 2-get info from SQL table 
@@ -65,15 +70,12 @@ public class EchoServer extends AbstractServer {
 			ResultSet resultSet = MySQLConnection.getValueInSqlTable(query);
 			ArrayList<Object> toClient = new ArrayList<Object>();
 			
-			InetAddress clientDataInformation = (InetAddress)getArrayFromClient.get(2);
-			System.out.println("==========================================================================================");
-			System.out.println(clientDataInformation.getHostName()+"  "+clientDataInformation.getHostAddress());
-			System.out.println("where his Thread IP is  ***"+Thread.currentThread()+"***");
-			System.out.println("Trying to operate the Query:");
-			System.out.println("");
-			System.out.println(query);
-			System.out.println("==========================================================================================");
-			System.out.println("");
+			clientDataInformation = (InetAddress)getArrayFromClient.get(2);
+			
+			System.out.print(LocalDate.now()+" , "+LocalDateTime.now().getHour()+":"+LocalDateTime.now().getMinute()+":  ");
+			System.out.println("Information Request: ");
+			System.out.println("	User Name :"+clientDataInformation.getHostName()+
+					" User IP: "+ clientDataInformation.getHostAddress()+" Trying to get information from DataBase");
 			toClient.add("2");
 			ArrayList<ArrayList<String>> array = new ArrayList<ArrayList<String>>();
 			ArrayList<String> temp = null;
@@ -94,48 +96,45 @@ public class EchoServer extends AbstractServer {
 				((ConnectionToClient)thread).sendToClient(toClient);
 				
 			} catch (SQLException e) {
-				System.out.println("Error getting information into arraylist");
+				System.out.println("	Error getting information into arraylist");
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				System.out.println("	No Such DataBase");
 			}
 			break;
 		}
 		case "3":
-			System.out.println("trying to add new data into table");
+			System.out.print(LocalDate.now()+" , "+LocalDateTime.now().getHour()+":"+LocalDateTime.now().getMinute()+":  ");
+			System.out.println("Modification Request:");
 			String query = (String) getArrayFromClient.get(1);
+			clientDataInformation = (InetAddress)getArrayFromClient.get(2);
+			System.out.println("	User Name :"+clientDataInformation.getHostName()+
+					" User IP: "+ clientDataInformation.getHostAddress()+" Trying to modify DataBase");
 			MySQLConnection.insertIntoSql(query);
 			break;
 		case "5":
 		{
-			System.out.println("image request to server");
+			System.out.print(LocalDate.now()+" , "+LocalDateTime.now().getHour()+":"+LocalDateTime.now().getMinute()+":  ");
+			System.out.println("Image Request: ");
 			try {
-			ImageStream imgToSend=new ImageStream("../gcm/Maps/afula.jpg");
-			String filePath="../gcm/Maps/afula.jpg";
+			String fileName=(String) getArrayFromClient.get(1);
+			String filePath="../gcm/Maps/"+fileName;
+			clientDataInformation = (InetAddress)getArrayFromClient.get(2);
 			
 			File newFile = new File(filePath.trim());
-			
-			byte [] arrayToSend=new byte[(int)newFile.length()];
-			FileInputStream fis = new FileInputStream(newFile);
-			BufferedInputStream bis = new BufferedInputStream(fis);
-			
-			imgToSend.initArray(arrayToSend.length);
-			imgToSend.setSize(arrayToSend.length);
-			
-			
-			bis.read(imgToSend.getImageStreamByteArray(),0,arrayToSend.length);
-			System.out.println("server sends file"+imgToSend.getFileName()+" size: "+imgToSend.getSize() +" to "+client.getName()+" "+client.getInetAddress());
+			byte[] imageByte= FileUtils.readFileToByteArray(newFile);
+			System.out.println("	server sends file: "+fileName+" , size: "+imageByte.length+" bytes");
+			System.out.println("	File Path: "+filePath);
+			System.out.println("	Sending to Client Name : "+clientDataInformation.getHostName()+", Client IP: "+clientDataInformation.getHostAddress());
 			
 			ArrayList<Object> toClient = new ArrayList<Object>();
 			toClient.add("5");
 			//toClient.add(imgToSend);
-			toClient.add(a);
+			toClient.add(imageByte);
 			
 			Thread thread = Thread.currentThread();
 			((ConnectionToClient)thread).sendToClient(toClient);
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				System.out.println("	No Such file");
 			}
 			
 			
@@ -168,6 +167,7 @@ public class EchoServer extends AbstractServer {
 	 * starts listening for connections.
 	 */
 	protected void serverStarted() {
+		System.out.print(LocalDate.now()+" , "+LocalDateTime.now().getHour()+":"+LocalDateTime.now().getMinute()+":  ");
 		System.out.println("Server listening for connections on port " + getPort());
 		MySQLConnection.open();
 		MySQLConnection.createSchema();
@@ -179,6 +179,7 @@ public class EchoServer extends AbstractServer {
 	 * listening for connections.
 	 */
 	protected void serverStopped() {
+		System.out.print(LocalDate.now()+" , "+LocalDateTime.now().getHour()+":"+LocalDateTime.now().getMinute()+":  ");
 		System.out.println("Server has stopped listening for connections.");
 	}
 

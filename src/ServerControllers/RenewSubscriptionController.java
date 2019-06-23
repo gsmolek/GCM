@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
@@ -44,10 +45,9 @@ public class RenewSubscriptionController extends Thread {
 			ArrayList<ArrayList<String>> array = new ArrayList<ArrayList<String>>();
 			ArrayList<String> temp = null;
 			
-			
-				System.out.println("==========================================================================================");
-				System.out.println("***trying to Send Renew Messages***");
-				System.out.println("==========================================================================================");
+			System.out.println();
+			System.out.print(LocalDate.now()+" , "+LocalDateTime.now().getHour()+":"+LocalDateTime.now().getMinute()+":  ");			
+			System.out.println("Obtaining information about subscription and sending renew notifications");
 				ResultSetMetaData rsmd = (ResultSetMetaData) resultSet.getMetaData();
 				int column = rsmd.getColumnCount();
 				while (resultSet.next()) {
@@ -59,11 +59,20 @@ public class RenewSubscriptionController extends Thread {
 				}
 				for(int i=0;i<array.size();i++)
 					sendNotificationToSubscribersNeedToRenew(array.get(i));
+				if(array.size()==0)
+				{
+					System.out.print(LocalDate.now()+" , "+LocalDateTime.now().getHour()+":"+LocalDateTime.now().getMinute()+":  ");
+					System.out.println("No users with subscription running out");
+				}
+				System.out.print(LocalDate.now()+" , "+LocalDateTime.now().getHour()+":"+LocalDateTime.now().getMinute()+":  ");
+				System.out.println("will check renews once again tomorrow");
 				
 			} catch (SQLException e) {
+				System.out.print(LocalDate.now()+" , "+LocalDateTime.now().getHour()+":"+LocalDateTime.now().getMinute()+":  ");
 				System.out.println("Error getting information into arraylist");
 			} catch (NullPointerException a)
 			{
+				System.out.print(LocalDate.now()+" , "+LocalDateTime.now().getHour()+":"+LocalDateTime.now().getMinute()+":  ");
 				System.out.println("Null pointer Exception in E-Mail - empty E-Mail Table");
 			}
 			
@@ -72,9 +81,7 @@ public class RenewSubscriptionController extends Thread {
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 			}
-			System.out.println("==========================================================================================");
-			System.out.println("***will check renews once again in tomorow***");
-			System.out.println("==========================================================================================");
+			
 		}
 		
 		
