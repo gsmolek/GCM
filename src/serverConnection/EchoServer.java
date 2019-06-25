@@ -72,8 +72,9 @@ public class EchoServer extends AbstractServer {
 		InetAddress clientDataInformation= (InetAddress)getArrayFromClient.get(2);
 		if(!listOfCons.contains(clientDataInformation.getHostAddress()))
 		{
-			listOfCons.add(clientDataInformation.getHostAddress());
+			listOfCons.add(client.getInetAddress().getHostAddress());
 		}
+		
 		/**
 		 * 1-
 		 * 2-get info from SQL table 
@@ -85,6 +86,7 @@ public class EchoServer extends AbstractServer {
 		case "1": {
 			String query = (String) getArrayFromClient.get(arrayLength);
 			MySQLConnection.setValueInSqlTable(query);
+
 			break;
 		}
 		case "2": {
@@ -132,6 +134,7 @@ public class EchoServer extends AbstractServer {
 			System.out.println("	User Name :"+clientDataInformation.getHostName()+
 					" User IP: "+ clientDataInformation.getHostAddress()+" Trying to modify DataBase");
 			MySQLConnection.insertIntoSql(query);
+
 			break;
 		case "5":
 		{
@@ -152,7 +155,7 @@ public class EchoServer extends AbstractServer {
 			toClient.add("5");
 			//toClient.add(imgToSend);
 			toClient.add(imageByte);
-			
+
 			Thread thread = Thread.currentThread();
 			((ConnectionToClient)thread).sendToClient(toClient);
 			} catch (IOException e) {
@@ -190,6 +193,7 @@ public class EchoServer extends AbstractServer {
 				toClient.add(array);
 				Thread thread = Thread.currentThread();
 				((ConnectionToClient)thread).sendToClient(toClient);
+
 				if(!array.isEmpty() && array!=null)
 				{
 					String[] a=new String[1];
@@ -254,6 +258,38 @@ public class EchoServer extends AbstractServer {
 	 * This method overrides the one in the superclass. Called when the server
 	 * starts listening for connections.
 	 */
+	public void checkConnectionsToGcm()
+	{
+		for(int i=0;i<listOfConsToGCM.size();i++)
+		{
+			boolean answer=this.checkIfConnected(listOfConsToGCM.get(i));
+			if(!answer)
+			{
+				listOfConsToGCM.remove(i);
+			}
+		}
+	
+	}
+	public void printGcmConnectionList()
+	{
+		Thread[] thread=this.getClientConnections();
+		for(int i=0;i<thread.length;i++)
+		{
+			System.out.print(((ConnectionToClient)thread[i]).getInetAddress().getHostAddress()+", ");
+		}
+	}
+	public boolean checkIfConnected(String ip)
+	{
+		Thread[] thread=this.getClientConnections();
+		for(int i=0;i<thread.length;i++)
+		{
+			if(ip.equals(((ConnectionToClient)thread[i]).getComputerIp()))
+			{
+				return true;
+			}
+		}
+		return false;
+	}
 	protected void serverStarted() {
 		System.out.print(LocalDate.now()+" , "+LocalDateTime.now().getHour()+":"+LocalDateTime.now().getMinute()+":  ");
 		System.out.println("Server listening for connections on port " + getPort());

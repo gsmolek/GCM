@@ -18,11 +18,13 @@ public class GUIthread extends Thread {
 		{
 			
 			try {
-				TimeUnit.SECONDS.sleep(3);
+				TimeUnit.SECONDS.sleep(5);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 			}
+			this.a.server.checkConnectionsToGcm();
 			this.a.countConnections();
+			this.a.server.printGcmConnectionList();
 		}
 		
 		
