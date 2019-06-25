@@ -16,12 +16,13 @@ public class GUIthread extends Thread {
 		
 		while(true)
 		{
-			this.a.countConnections();
+			
 			try {
 				TimeUnit.SECONDS.sleep(3);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 			}
+			this.a.countConnections();
 		}
 		
 		

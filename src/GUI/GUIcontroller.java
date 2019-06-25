@@ -124,7 +124,8 @@ public class GUIcontroller implements Initializable{
 	public void countConnections()
 	{
 		ArrayList<String> a=server.getListOfCons();
-			ServerCon.setText(String.valueOf(a.size()));
+		ServerCon.setText(String.valueOf(a.size()));
+		GCMCon.setText(String.valueOf(server.getListOfConsToGCM().size()));
 	}
 	public void startButtonAction(ActionEvent event)
 	{

@@ -28,6 +28,15 @@ public class EchoServer extends AbstractServer {
 	final public static int DEFAULT_PORT = 5550;
 	private static String portFromUser;
 	private static ArrayList<String> listOfCons=new ArrayList<String>();
+	private static ArrayList<String> listOfConsToGCM=new ArrayList<String>();
+	public static ArrayList<String> getListOfConsToGCM() {
+		return listOfConsToGCM;
+	}
+
+	public static void setListOfConsToGCM(ArrayList<String> listOfConsToGCM) {
+		EchoServer.listOfConsToGCM = listOfConsToGCM;
+	}
+
 	public static ArrayList<String> getListOfCons() {
 		return listOfCons;
 	}
@@ -210,6 +219,14 @@ public class EchoServer extends AbstractServer {
 			}
 			
 			break;
+		}
+		case "7":
+		{
+			clientDataInformation = (InetAddress)getArrayFromClient.get(2);
+			if(!listOfConsToGCM.contains(clientDataInformation.getHostAddress()))
+			{
+				listOfConsToGCM.add(clientDataInformation.getHostAddress());
+			}
 		}
 	}
 		/*
