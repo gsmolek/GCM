@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="607.0" prefWidth="999.0" style="-fx-background-color: #d9edfc;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.GUIcontroller">
+<AnchorPane fx:id="serverPane" prefHeight="614.0" prefWidth="999.0" style="-fx-background-color: #d9edfc;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.GUIcontroller">
    <children>
       <Pane layoutX="14.0" layoutY="-65.0" prefHeight="364.0" prefWidth="349.0">
          <children>
@@ -106,6 +106,8 @@
             <Font name="System Bold" size="36.0" />
          </font>
       </Label>
-      <ImageView fx:id="image" fitHeight="153.0" fitWidth="195.0" layoutX="790.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="image" fitHeight="153.0" fitWidth="195.0" layoutX="791.0" layoutY="55.0" pickOnBounds="true" preserveRatio="true" />
+      <Button fx:id="Exit" layoutX="952.0" layoutY="14.0" mnemonicParsing="false" onAction="#clickOnExit" prefHeight="14.0" prefWidth="24.0" style="-fx-background-color: #f2a4ad; -fx-border-color: #f7d9dd;" text="X" textFill="RED" />
+      <Button fx:id="Minimize" layoutX="924.0" layoutY="14.0" mnemonicParsing="false" onAction="#clickOnMinimize" prefHeight="18.0" prefWidth="24.0" style="-fx-background-color: #8193e2; -fx-border-color: #cdd4f2;" text="_" textFill="#3300ff" />
    </children>
 </AnchorPane>

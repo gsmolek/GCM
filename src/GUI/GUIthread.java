@@ -1,6 +1,11 @@
 package GUI;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.FileHandler;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 public class GUIthread extends Thread {
 
@@ -22,11 +27,12 @@ public class GUIthread extends Thread {
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 			}
-			this.a.server.checkConnectionsToGcm();
-			this.a.countConnections();
-			this.a.server.printGcmConnectionList();
+			
+			ArrayList<String> s= this.a.server.ActiveConnection();
+			this.a.countConnections(s.size());
 		}
 		
 		
 	}
+
 }

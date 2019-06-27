@@ -23,6 +23,9 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import serverConnection.EchoServer;
 
 public class GUIcontroller implements Initializable{
@@ -50,6 +53,13 @@ public class GUIcontroller implements Initializable{
 	private Button StartBtn;
 	@FXML
 	private Button StopBtn;
+	@FXML
+	private AnchorPane serverPane;
+	@FXML
+	private Button Exit;
+	@FXML
+	private Button Minimize;
+	
 	
     private GUIthread guiThread;
     RenewSubscriptionController mailThread;
@@ -60,7 +70,16 @@ public class GUIcontroller implements Initializable{
 	public EchoServer getServer() {
 		return server;
 	}
-
+	
+	public void clickOnExit(ActionEvent event)
+	{
+		this.stopButtonAction(event);
+		Platform.exit();
+	}
+	public void clickOnMinimize(ActionEvent event)
+	{
+		((Stage) (serverPane).getScene().getWindow()).setIconified(true);
+	}
 	boolean started=false;
 	final public static int DEFAULT_PORT = 5550;
 	private ArrayList<ClientInformation> messageList;
@@ -96,6 +115,10 @@ public class GUIcontroller implements Initializable{
         System.setErr(new PrintStream(out, true));
         
 	}
+	public String getTextAreaString()
+	{
+		return this.TextA1.getText();
+	}
 	public void CreateServer()
 	{
 		if(PortA1.getText().isEmpty())
@@ -119,13 +142,16 @@ public class GUIcontroller implements Initializable{
 	    catch (Exception ex) 
 	    {
 	      System.out.println("ERROR - Could not listen for clients!");
+	      InActiveLabel.setVisible(true);
+	      ActiveLabel.setVisible(false);
+	  	this.StopBtn.setVisible(false);
+		this.StartBtn.setVisible(true);
 	    }
 	}
-	public void countConnections()
+	public void countConnections(int num)
 	{
-		ArrayList<String> a=server.getListOfCons();
-		ServerCon.setText(String.valueOf(a.size()));
-		GCMCon.setText(String.valueOf(server.getListOfConsToGCM().size()));
+		ServerCon.setText(String.valueOf(server.getNumberOfClients()));
+		GCMCon.setText(String.valueOf(num));
 	}
 	public void startButtonAction(ActionEvent event)
 	{
@@ -166,6 +192,7 @@ public class GUIcontroller implements Initializable{
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		try {
+
 			inetAddress = InetAddress.getLocalHost();
 			serverIP.setText(inetAddress.getHostAddress());
 			ServerName.setText(inetAddress.getHostName());

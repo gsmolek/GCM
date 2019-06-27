@@ -12,6 +12,8 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 
 import com.mysql.cj.jdbc.result.ResultSetMetaData;
+import com.sun.accessibility.internal.resources.accessibility;
+
 import java.io.*;
 
 import ocsf.server.*;
@@ -28,11 +30,13 @@ public class EchoServer extends AbstractServer {
 	final public static int DEFAULT_PORT = 5550;
 	private static String portFromUser;
 	private static ArrayList<String> listOfCons=new ArrayList<String>();
-	private static ArrayList<String> listOfConsToGCM=new ArrayList<String>();
+	private static ArrayList<String> listOfConsToGCM;
+	private Thread[] threads;
+	private static GUIcontroller gui;
 	public static ArrayList<String> getListOfConsToGCM() {
 		return listOfConsToGCM;
 	}
-
+	
 	public static void setListOfConsToGCM(ArrayList<String> listOfConsToGCM) {
 		EchoServer.listOfConsToGCM = listOfConsToGCM;
 	}
@@ -73,8 +77,9 @@ public class EchoServer extends AbstractServer {
 		if(!listOfCons.contains(clientDataInformation.getHostAddress()))
 		{
 			listOfCons.add(client.getInetAddress().getHostAddress());
+			System.out.print(LocalDate.now()+" , "+LocalDateTime.now().getHour()+":"+LocalDateTime.now().getMinute()+":  ");
+			System.out.println("Connection created with "+client.getInetAddress().getHostName()+" , ip: "+client.getInetAddress().getHostAddress());
 		}
-		
 		/**
 		 * 1-
 		 * 2-get info from SQL table 
@@ -233,42 +238,31 @@ public class EchoServer extends AbstractServer {
 			}
 		}
 	}
-		/*
-		 * System.out.println(msg);
-		 * 
-		 * ArrayList<String> m=(ArrayList<String>)msg; System.out.println(m);
-		 * if(m.get(0).equals("getAll")) { System.out.println("getALL");
-		 * MySQLConnection.UpdateCitiesName(); ArrayList<String>
-		 * citiesName=MySQLConnection.getArrayOfCitiesName();
-		 * this.sendToAllClients(citiesName); } else if(m.get(0).equals("save")) {
-		 * System.out.println("serevr enter save"); MySQLConnection.saveChanges(m);
-		 * ArrayList<String> saved=new ArrayList<String>(); saved.add("saved");
-		 * this.sendToAllClients(saved); } else {
-		 * System.out.println("serevr enter info");
-		 * MySQLConnection.updateCityInformation(m.get(0)); ArrayList<String>
-		 * cityInfo=MySQLConnection.getCityInfo(); this.sendToAllClients(cityInfo); }
-		 * 
-		 * //System.out.println("Message received: " + msg + " from " + client);
-		 * //this.sendToAllClients(msg);
-		 * 
-		 */
 	}
 
-	/**
-	 * This method overrides the one in the superclass. Called when the server
-	 * starts listening for connections.
-	 */
-	public void checkConnectionsToGcm()
+	public ArrayList<String> ActiveConnection()
 	{
-		for(int i=0;i<listOfConsToGCM.size();i++)
-		{
-			boolean answer=this.checkIfConnected(listOfConsToGCM.get(i));
-			if(!answer)
-			{
-				listOfConsToGCM.remove(i);
-			}
+		String sql="SELECT user_name fROM users u WHERE u.login='1';";
+		ResultSet resultSet=this.MySQLConnection.getValueInSqlTable(sql);
+		ArrayList<ArrayList<String>> array = new ArrayList<ArrayList<String>>();
+		ArrayList<String> temp = null;
+		try {
+			ResultSetMetaData rsmd = (ResultSetMetaData) resultSet.getMetaData();
+			
+			int column = rsmd.getColumnCount();
+			while (resultSet.next()) {
+				temp = new ArrayList<String>();
+				for (int i = 1; i <= column; i++) {
+					temp.add(resultSet.getString(i));
+				}
+				array.add(temp);
+				}
+			listOfConsToGCM=array.get(0);
+			return array.get(0);
+		} catch (SQLException e) {
+		System.out.println("	Error getting information into arraylist");
 		}
-	
+		return null;
 	}
 	public void printGcmConnectionList()
 	{
@@ -283,13 +277,18 @@ public class EchoServer extends AbstractServer {
 		Thread[] thread=this.getClientConnections();
 		for(int i=0;i<thread.length;i++)
 		{
-			if(ip.equals(((ConnectionToClient)thread[i]).getComputerIp()))
+			if(ip.equals(((ConnectionToClient)thread[i]).getInetAddress().getHostAddress()))
 			{
 				return true;
 			}
+			
 		}
 		return false;
 	}
+	/**
+	 * This method overrides the one in the superclass. Called when the server
+	 * starts listening for connections.
+	 */
 	protected void serverStarted() {
 		System.out.print(LocalDate.now()+" , "+LocalDateTime.now().getHour()+":"+LocalDateTime.now().getMinute()+":  ");
 		System.out.println("Server listening for connections on port " + getPort());
@@ -333,7 +332,7 @@ public class EchoServer extends AbstractServer {
 		try {
 			sv.listen(); // Start listening for connections
 		} catch (Exception ex) {
-			System.out.println("ERROR - Could not listen for clients!");
+			System.out.println("ERROR - 111Could not listen for clients!");
 		}
 	}
 }
