@@ -153,6 +153,18 @@ public class mysqlConnection {
 					") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;" + 
 					"";
 			SQLstatment.executeUpdate(query_to_add_new_table);
+			
+			query_to_add_new_table = 
+					"CREATE TABLE IF NOT EXISTS `map_mapcollection` (\r\n" + 
+					"  `Id` int(11) NOT NULL AUTO_INCREMENT,\r\n" + 
+					"  `map_id` int(11) unsigned DEFAULT NULL,\r\n" + 
+					"  `collection_id` int(11) unsigned DEFAULT NULL,\r\n" + 
+					"  PRIMARY KEY (`Id`)\r\n" + 
+					") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;" + 
+					"";
+			SQLstatment.executeUpdate(query_to_add_new_table);
+			
+			
 			query_to_add_new_table =  
 					"CREATE TABLE IF NOT EXISTS`map` (\r\n" + 
 					"  `Id` int(11) NOT NULL AUTO_INCREMENT,\r\n" + 

@@ -1,3 +1,9 @@
+/**
+ * class that maintaining the Email sending for subscription renewing's  
+ * 
+ */
+
+
 package ServerControllers;
 
 import java.io.IOException;
@@ -27,7 +33,10 @@ public class RenewSubscriptionController extends Thread {
 		this.a=a;
 		this.sqlCommunication=sqlCommunication;
 	}
-
+/**
+ * looking in the SQL for subscriptions ending in three days
+ * and send them mails about renew
+ */
 	@Override
 	public void run() {
 		
@@ -86,6 +95,10 @@ public class RenewSubscriptionController extends Thread {
 		
 		
 	}
+	/**
+	 * gets an ArrayList of Email's and sends them a renew Email message
+	 * @param array of Email's
+	 */
 	public void sendNotificationToSubscribersNeedToRenew(ArrayList<String> array)
 	{
 		String[] toSend=new String[1];

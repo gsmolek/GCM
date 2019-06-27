@@ -1,3 +1,13 @@
+/**
+ * @author GILAD MOLEK
+ * @author DORON TUCHMAN
+ * @author MATI HALFA
+ * @author MATAN ASULIN
+ * @author SHARONE BURSHTIEN
+ *
+ *	@version 1.40
+ *	@since 2019
+ */
 package serverConnection;
 
 import java.io.IOException;
@@ -18,6 +28,7 @@ import java.io.*;
 
 import ocsf.server.*;
 import GUI.*;
+import Logger.LogFile;
 import ServerControllers.ImageStream;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -28,52 +39,66 @@ public class EchoServer extends AbstractServer {
 	 * The default port to listen on.
 	 */
 	final public static int DEFAULT_PORT = 5550;
+	/**
+	 * The port the user selected
+	 */
 	private static String portFromUser;
 	private static ArrayList<String> listOfCons=new ArrayList<String>();
 	private static ArrayList<String> listOfConsToGCM;
 	private Thread[] threads;
 	private static GUIcontroller gui;
+	
+	/**
+	 * 
+	 * @return ArrayList of the connected clients
+	 */
 	public static ArrayList<String> getListOfConsToGCM() {
 		return listOfConsToGCM;
 	}
 	
-	public static void setListOfConsToGCM(ArrayList<String> listOfConsToGCM) {
-		EchoServer.listOfConsToGCM = listOfConsToGCM;
-	}
-
+	/**
+	 * 
+	 * @return list of clients that have been in contact with the server (asking for information or updating information)
+	 */
 	public static ArrayList<String> getListOfCons() {
 		return listOfCons;
 	}
-
+	/**
+	 * set the connection to server ArrayList
+	 * @param listOfCons array of Strings
+	 */
 	public static void setListOfCons(ArrayList<String> listOfCons) {
 		EchoServer.listOfCons = listOfCons;
 	}
 
 	mysqlConnection MySQLConnection = new mysqlConnection();
-
+	/**
+	 * getter of the mySQLConnection
+	 * @return MySQLConnection the connection with the SQL database
+	 */
 	public mysqlConnection getMySQLConnection() {
 		return MySQLConnection;
 	}
-
+/**
+ * constructor of the EchoServer
+ * @param port get the integer port
+ */
 	public EchoServer(int port) {
 		super(port);
 	}
 
-	private void arrangeResultset(ResultSet rs) {
-
-	}
 
 	/**
 	 * This method handles any messages received from the client.
 	 *
-	 * @param msg    The message received from the client.
+	 * @param msg   gets an ArrayList Of Objects, the first Object is a String of the switch case number
 	 * @param client The connection from which the message originated.
 	 */
 	public void handleMessageFromClient(Object msg, ConnectionToClient client) {
 		ArrayList<Object> getArrayFromClient = (ArrayList<Object>) msg;
 		String operation = (String) getArrayFromClient.get(0);
 		int arrayLength = getArrayFromClient.size();
-		InetAddress clientDataInformation= (InetAddress)getArrayFromClient.get(2);
+		InetAddress clientDataInformation= (InetAddress)getArrayFromClient.get(getArrayFromClient.size()-1);
 		if(!listOfCons.contains(clientDataInformation.getHostAddress()))
 		{
 			listOfCons.add(client.getInetAddress().getHostAddress());
@@ -81,13 +106,21 @@ public class EchoServer extends AbstractServer {
 			System.out.println("Connection created with "+client.getInetAddress().getHostName()+" , ip: "+client.getInetAddress().getHostAddress());
 		}
 		/**
+		 * switch index:
 		 * 1-
 		 * 2-get info from SQL table 
 		 * 3-edit table 
 		 * 4-Error
 		 * 5-get image as Object
+		 * 6-password recovery to mail
 		 */
 		switch (operation) {
+		/**
+		 * case "1":
+		 * set a value into the database table
+		 * the ArrayList Second Object String SQL query
+		 * the ArrayList Third Object is from InetAddress type
+		 */
 		case "1": {
 			String query = (String) getArrayFromClient.get(arrayLength);
 			MySQLConnection.setValueInSqlTable(query);
@@ -95,6 +128,29 @@ public class EchoServer extends AbstractServer {
 			break;
 		}
 		case "2": {
+			/**
+			 * case "2":
+			 * get a value from the database table the return value is ArrayList<ArrayList<String>>
+			 * ArrayList Second Object String SQL query
+			 * the ArrayList Third Object is from InetAddress type
+			 * 
+			 * 	================================
+			 * |      ***GET INDEX***			|
+			 * |0-"2"							|
+			 * |1-String SQL Query				|
+			 * |2-InetAddress					|
+			 *  ================================
+			 * 
+			 * creates a new Array to be send to client ArrayList<Object> type
+			 * the first object in the return ArrayList is "2"
+			 * the second object in the return ArrayList is ArrayList<ArrayList<String>> type
+			 * 
+			 * 	================================
+			 * |      ***RETURN INDEX***		|
+			 * |0-"2"							|
+			 * |1-ArrayList<ArrayList<String>>	|
+			 *  ================================
+			 */
 			String query = (String) getArrayFromClient.get(1);
 			ResultSet resultSet = MySQLConnection.getValueInSqlTable(query);
 			ArrayList<Object> toClient = new ArrayList<Object>();
@@ -132,6 +188,20 @@ public class EchoServer extends AbstractServer {
 			break;
 		}
 		case "3":
+			/**
+			 * case "3":
+			 * Table Alteration :
+			 * set a value into the database table
+			 * ArrayList Second Object String SQL query
+			 * the ArrayList Third Object is from InetAddress type
+			 * 	================================
+			 * |      ***GET INDEX***			|
+			 * |0-"3"							|
+			 * |1-String SQL Query				|
+			 * |2-InetAddress					|
+			 *  ================================
+			 * 
+			 */
 			System.out.print(LocalDate.now()+" , "+LocalDateTime.now().getHour()+":"+LocalDateTime.now().getMinute()+":  ");
 			System.out.println("Modification Request:");
 			String query = (String) getArrayFromClient.get(1);
@@ -143,6 +213,30 @@ public class EchoServer extends AbstractServer {
 			break;
 		case "5":
 		{
+			/**
+			 * case "3":
+			 * Image Transfer :
+			 * get a name of an image, finds the image from database and send it back
+			 * ArrayList Second Object String of the image name including its type
+			 * the ArrayList Third Object is from InetAddress type
+			 * 	================================
+			 * |      ***GET INDEX***			|
+			 * |0-"7"							|
+			 * |1-String image name.file		|
+			 * |2-InetAddress					|
+			 *  ================================
+			 * 
+			 * creates a new Array to be send to client ArrayList<Object> type
+			 * the first object in the return ArrayList is "5"
+			 * the second object in the return ArrayList is the image as byte[] type
+			 * 
+			 * 	================================
+			 * |      ***RETURN INDEX***		|
+			 * |0-"5"							|
+			 * |1-byte[]						|
+			 *  ================================
+			 * 
+			 */
 			System.out.print(LocalDate.now()+" , "+LocalDateTime.now().getHour()+":"+LocalDateTime.now().getMinute()+":  ");
 			System.out.println("Image Request: ");
 			try {
@@ -172,6 +266,32 @@ public class EchoServer extends AbstractServer {
 		}
 		case "6":
 		{
+			/**
+			 * case "3":
+			 * Image Transfer :
+			 * get an email as string check if the email exists if so, end recovered password to the email
+			 * 	================================
+			 * |      ***GET INDEX***			|
+			 * |0-"6"							|
+			 * |1-String Email					|
+			 * |2-InetAddress					|
+			 *  ================================
+			 * 
+			 * creates a new Array to be send to client ArrayList<Object> type
+			 * the first object in the return ArrayList is "5"
+			 * the second object in the return ArrayList is the image as byte[] type
+			 * 
+			 * if the email was found: creates a new ArrayList to send to the client
+			 * 	the first object is "2"
+			 * 	the second object is ArrayList<ArrayList<String>> type inside it the email wiil be
+			 * else, send null
+			 * 
+			 * 	================================
+			 * |      ***RETURN INDEX***		|
+			 * |0-"2"							|
+			 * |1-ArrayList<ArrayList<String>>	|
+			 *  ================================
+			 */
 			System.out.println("Enter 6");
 			String email = (String) getArrayFromClient.get(1);
 			System.out.println(email);
@@ -231,15 +351,51 @@ public class EchoServer extends AbstractServer {
 		}
 		case "7":
 		{
-			clientDataInformation = (InetAddress)getArrayFromClient.get(2);
-			if(!listOfConsToGCM.contains(clientDataInformation.getHostAddress()))
+			/**
+			 * case "3":
+			 * Email sender :
+			 * 
+			 * gets at second object ArrayList<String> of emails
+			 * at third object header
+			 * at the fourth object body
+			 * at fifth  object  InetAddress
+			 * 	================================
+			 * |      ***GET INDEX***			|
+			 * |0-"7"							|
+			 * |1-ArrayList<String> Emails		|
+			 * |2-String header					|
+			 * |3-String body					|
+			 * |4-InetAddress					|
+			 *  ================================
+			 * then sent to all emails the header and body
+			 * 
+
+			 */
+			System.out.println("Enter case 7");
+			ArrayList<String> email =  (ArrayList<String>) getArrayFromClient.get(1);
+			String[] a=new String[email.size()];
+			for(int i=0;i<a.length;i++)
 			{
-				listOfConsToGCM.add(clientDataInformation.getHostAddress());
+				a[i]=email.get(i);
 			}
+			String header=(String) getArrayFromClient.get(3);
+			String body= (String) getArrayFromClient.get(4);
+					Email newmail=new Email(a,header,body);
+					newmail.sendMail();
+					System.out.println("Sent emails to:");
+					for(int i=0;i<a.length;i++)
+					{
+						System.out.print(a[i]+" , ");
+					}
+				}
+			break;
 		}
 	}
-	}
-
+	
+/**
+ * 
+ * @return ArrayList<String> of user_name of all connected people in case of error returns null
+ */
 	public ArrayList<String> ActiveConnection()
 	{
 		String sql="SELECT user_name fROM users u WHERE u.login='1';";
@@ -257,13 +413,19 @@ public class EchoServer extends AbstractServer {
 				}
 				array.add(temp);
 				}
-			listOfConsToGCM=array.get(0);
-			return array.get(0);
+			if(array!=null && !array.isEmpty())
+			{
+				listOfConsToGCM=array.get(0);
+				return array.get(0);
+			}
 		} catch (SQLException e) {
 		System.out.println("	Error getting information into arraylist");
 		}
 		return null;
 	}
+	/**
+	 * prints all the IP addresses of the connected clients
+	 */
 	public void printGcmConnectionList()
 	{
 		Thread[] thread=this.getClientConnections();
@@ -272,6 +434,11 @@ public class EchoServer extends AbstractServer {
 			System.out.print(((ConnectionToClient)thread[i]).getInetAddress().getHostAddress()+", ");
 		}
 	}
+	/**
+	 * check if a client is connected
+	 * @param ip as String
+	 * @return true if connected
+	 */
 	public boolean checkIfConnected(String ip)
 	{
 		Thread[] thread=this.getClientConnections();
@@ -285,10 +452,10 @@ public class EchoServer extends AbstractServer {
 		}
 		return false;
 	}
-	/**
-	 * This method overrides the one in the superclass. Called when the server
-	 * starts listening for connections.
-	 */
+/**
+ * method creates a connection with the SQL database
+ * if not exists create a schema 'gcm' and creates all tables
+ */
 	protected void serverStarted() {
 		System.out.print(LocalDate.now()+" , "+LocalDateTime.now().getHour()+":"+LocalDateTime.now().getMinute()+":  ");
 		System.out.println("Server listening for connections on port " + getPort());
@@ -309,11 +476,7 @@ public class EchoServer extends AbstractServer {
 	// Class methods ***************************************************
 
 	/**
-	 * This method is responsible for the creation of the server instance (there is
-	 * no UI in this phase).
-	 *
-	 * @param args[0] The port number to listen on. Defaults to 5555 if no argument
-	 *        is entered.
+	 * This method is responsible for the creation of the server instance 
 	 */
 
 	public static void startServer() {

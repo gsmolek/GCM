@@ -1,3 +1,14 @@
+ /**
+ * @author GILAD MOLEK
+ * @author DORON TUCHMAN
+ * @author MATI HALFA
+ * @author MATAN ASULIN
+ * @author SHARONE BURSHTIEN
+ *
+ *	@version 1.40
+ *	@since 2019
+ *Maintaining Email Host Connection
+ */
 package serverConnection;
 
 import java.util.ArrayList;
@@ -25,7 +36,12 @@ public class Email {
 	private String[] recipients;
 	private String subject;
 	private String body;
-	
+	/**
+	 * Constructor
+	 * @param recipients
+	 * @param subject
+	 * @param body
+	 */
 	public Email(String[] recipients,String subject, String body)
 	{
 		this.recipients=recipients;
@@ -46,7 +62,10 @@ public class Email {
 	            });
 		message=new MimeMessage(session);
 	}
-	
+	/**
+	 * when this this method called it send all the renewing mails to recipients that pass by the constructor
+	 * using GMAIL API 
+	 */
 	public void sendMail()
 	{
         try {

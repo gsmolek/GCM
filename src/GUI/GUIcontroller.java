@@ -1,3 +1,13 @@
+/**
+ * @author GILAD MOLEK
+ * @author DORON TUCHMAN
+ * @author MATI HALFA
+ * @author MATAN ASULIN
+ * @author SHARONE BURSHTIEN
+ *
+ *	@version 1.40
+ *	@since 2019
+ */
 package GUI;
 
 import java.io.IOException;
@@ -66,40 +76,77 @@ public class GUIcontroller implements Initializable{
 	
 	private InetAddress inetAddress;
 	protected EchoServer server;
-	
+	/**
+	 * @
+	 * @return the EchoServer Object created in this class
+	 */
 	public EchoServer getServer() {
 		return server;
 	}
-	
+	/**
+	 * exit button click :stops all connection and Exit
+	 * @param event
+	 */
 	public void clickOnExit(ActionEvent event)
 	{
 		this.stopButtonAction(event);
 		Platform.exit();
 	}
+	/**
+	 * minimize button
+	 * @param event
+	 */
 	public void clickOnMinimize(ActionEvent event)
 	{
 		((Stage) (serverPane).getScene().getWindow()).setIconified(true);
 	}
 	boolean started=false;
+	/**
+	 * default port is 5550
+	 */
 	final public static int DEFAULT_PORT = 5550;
 	private ArrayList<ClientInformation> messageList;
 	
+	/**
+	 * get the list holding the client information
+	 * @return ArrayList<ClientInformation>
+	 */
 	public ArrayList<ClientInformation> getMessageList() {
 		return messageList;
 	}
+	/**
+	 * setter for the ArrayList<ClientInformation>
+	 * @param messageList
+	 */
 	public void setMessageList(ArrayList<ClientInformation> messageList) {
 		this.messageList = messageList;
 	}
+	/**
+	 * add to the client information ArrayList
+	 * @param clientInformation
+	 */
 	public void addToMessageList(ClientInformation clientInformation)
 	{
 		this.messageList.add(clientInformation);
 	}
+	/**
+	 * server Console text getter
+	 * @return text in the server console
+	 */
 	public TextArea getTextA1() {
 		return TextA1;
 	}
+	/**
+	 * add text to the server console
+	 * @param String text
+	 */
 	public void addTextA1(String text) {
 		TextA1.insertText(TextA1.getLength(), text);
 	}
+	/**
+	 * creation of the server console
+	 * overrides the eclipse console
+	 */
 	public void createTextField()
 	{
 		TextA1.setEditable(false);
@@ -119,6 +166,10 @@ public class GUIcontroller implements Initializable{
 	{
 		return this.TextA1.getText();
 	}
+	/**
+	 * creation of the server.
+	 * gets the port from TextField if empty uses default port 5550
+	 */
 	public void CreateServer()
 	{
 		if(PortA1.getText().isEmpty())
@@ -148,17 +199,29 @@ public class GUIcontroller implements Initializable{
 		this.StartBtn.setVisible(true);
 	    }
 	}
+	/**
+	 * 
+	 * @param gets int num of connection and inserting it to to counts TextFields
+	 */
 	public void countConnections(int num)
 	{
 		ServerCon.setText(String.valueOf(server.getNumberOfClients()));
 		GCMCon.setText(String.valueOf(num));
 	}
+	/**
+	 * click on the start button starts the server listening to connections
+	 * @param event
+	 */
 	public void startButtonAction(ActionEvent event)
 	{
 		this.StopBtn.setVisible(true);
 		this.StartBtn.setVisible(false);
 		CreateServer();
 	}
+	/**
+	 * stop button click stop to listening and releasing the port
+	 * @param event
+	 */
 	public void stopButtonAction(ActionEvent event)
 	{
 		if(started)	
@@ -181,6 +244,10 @@ public class GUIcontroller implements Initializable{
 		else
 		System.out.println("There is no Server Connection!");
 	}
+	/**
+	 * clear button click  clears the server console
+	 * @param event
+	 */
 	public void ClearBtn(ActionEvent event)
 	{
 		TextA1.clear();
