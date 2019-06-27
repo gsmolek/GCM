@@ -147,7 +147,7 @@ public class EchoServer extends AbstractServer {
 			System.out.println("Image Request: ");
 			try {
 			String fileName=(String) getArrayFromClient.get(1);
-			String filePath="../gcm/Maps/"+fileName;
+			String filePath="../gcm/src/Maps/"+fileName;
 			clientDataInformation = (InetAddress)getArrayFromClient.get(2);
 			
 			File newFile = new File(filePath.trim());
