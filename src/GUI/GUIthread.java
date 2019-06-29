@@ -20,16 +20,14 @@ import java.util.logging.FileHandler;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
-import Logger.LogFile;
 
 public class GUIthread extends Thread {
 
 	GUIcontroller a;
-	private LogFile logFile;
+
 	public GUIthread(GUIcontroller a)
 	{
 		this.a=a;
-		this.logFile=new LogFile();
 		this.start();
 	}
 /**
@@ -47,7 +45,6 @@ public class GUIthread extends Thread {
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 			}
-			this.logFile.logging(this.a.getTextAreaString());
 			ArrayList<String> s= this.a.server.ActiveConnection();
 			if(s!=null)
 				this.a.countConnections(s.size());

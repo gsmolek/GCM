@@ -28,7 +28,6 @@ import java.io.*;
 
 import ocsf.server.*;
 import GUI.*;
-import Logger.LogFile;
 import ServerControllers.ImageStream;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -241,7 +240,7 @@ public class EchoServer extends AbstractServer {
 			System.out.println("Image Request: ");
 			try {
 			String fileName=(String) getArrayFromClient.get(1);
-			String filePath="../gcm/src/Maps/"+fileName;
+			String filePath="C:\\maps\\"+fileName;
 			clientDataInformation = (InetAddress)getArrayFromClient.get(2);
 			
 			File newFile = new File(filePath.trim());
