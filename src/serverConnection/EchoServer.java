@@ -378,8 +378,8 @@ public class EchoServer extends AbstractServer {
 			{
 				a[i]=email.get(i);
 			}
-			String header=(String) getArrayFromClient.get(3);
-			String body= (String) getArrayFromClient.get(4);
+			String header=(String) getArrayFromClient.get(2);
+			String body= (String) getArrayFromClient.get(3);
 					Email newmail=new Email(a,header,body);
 					newmail.sendMail();
 					System.out.println("Sent emails to:");
