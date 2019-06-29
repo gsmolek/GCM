@@ -131,12 +131,14 @@ public class mysqlConnection {
 					
 			SQLstatment.executeUpdate(query_to_add_new_table);
 			query_to_add_new_table = 
-					"CREATE TABLE IF NOT EXISTS `download` (\r\n" + 
+					"CREATE TABLE IF NOT EXISTS`download` (\r\n" + 
 					"  `date` date NOT NULL DEFAULT '0000-00-00',\r\n" + 
 					"  `user_id` int(11) unsigned NOT NULL DEFAULT '0',\r\n" + 
 					"  `collaction_id` int(11) unsigned NOT NULL DEFAULT '0',\r\n" + 
-					"  `time` time NOT NULL DEFAULT '00:00:00'\r\n" + 
-					") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;" + 
+					"  `time` time NOT NULL DEFAULT '00:00:00',\r\n" + 
+					"  `id` int(11) NOT NULL AUTO_INCREMENT,\r\n" + 
+					"  PRIMARY KEY (`id`)\r\n" + 
+					") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;" + 
 					"";
 			SQLstatment.executeUpdate(query_to_add_new_table);
 			
@@ -181,10 +183,23 @@ public class mysqlConnection {
 					"CREATE TABLE IF NOT EXISTS `map_collection` (\r\n" + 
 					"  `Id` int(11) NOT NULL AUTO_INCREMENT,\r\n" + 
 					"  `vertion` double(4,1) unsigned NOT NULL DEFAULT '0.0',\r\n" + 
-					"  `price` int(11) unsigned NOT NULL DEFAULT '0',\r\n" + 
+					"  `oneTimePrice` int(11) unsigned NOT NULL DEFAULT '0',\r\n" + 
 					"  `approved` tinyint(1) unsigned NOT NULL DEFAULT '0',\r\n" + 
+					"  `subscriptionPrice` int(11) unsigned DEFAULT NULL,\r\n" + 
+					"  `userName` varchar(255) DEFAULT NULL,\r\n" + 
+					"  `old_collection` int(11) unsigned DEFAULT NULL,\r\n" + 
 					"  PRIMARY KEY (`Id`)\r\n" + 
-					") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;" + 
+					") ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4;" + 
+					"";
+			SQLstatment.executeUpdate(query_to_add_new_table);
+			
+			query_to_add_new_table =
+					"CREATE TABLE IF NOT EXISTS `map_mapcollection` (\r\n" + 
+					"  `Id` int(11) NOT NULL AUTO_INCREMENT,\r\n" + 
+					"  `map_id` int(11) unsigned DEFAULT NULL,\r\n" + 
+					"  `collection_id` int(11) unsigned DEFAULT NULL,\r\n" + 
+					"  PRIMARY KEY (`Id`)\r\n" + 
+					") ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;" + 
 					"";
 			SQLstatment.executeUpdate(query_to_add_new_table);
 			

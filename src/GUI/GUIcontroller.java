@@ -39,6 +39,9 @@ import javafx.stage.StageStyle;
 import serverConnection.EchoServer;
 
 public class GUIcontroller implements Initializable{
+	/**
+	 * 
+	 */
 	@FXML
 	private TextArea TextA1;
 	@FXML

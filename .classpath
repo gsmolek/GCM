@@ -14,5 +14,6 @@
 	<classpathentry kind="con" path="org.eclipse.fx.ide.jdt.core.JAVAFX_CONTAINER"/>
 	<classpathentry kind="lib" path="MailConnection/javax.mail.jar"/>
 	<classpathentry kind="lib" path="Apache/commons-io-2.6.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files/Java/jre1.8.0_212/lib/jfxswt.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
