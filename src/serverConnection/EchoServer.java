@@ -267,7 +267,7 @@ public class EchoServer extends AbstractServer {
 		{
 			/**
 			 * case "3":
-			 * Image Transfer :
+			 * 
 			 * get an email as string check if the email exists if so, end recovered password to the email
 			 * 	================================
 			 * |      ***GET INDEX***			|
@@ -294,7 +294,7 @@ public class EchoServer extends AbstractServer {
 			System.out.println("Enter 6");
 			String email = (String) getArrayFromClient.get(1);
 			System.out.println(email);
-			String sql="SELECT email,first_name,last_name,user_name,password FROM purchases p,user_card u,users r WHERE p.user_id=u.user_id AND p.user_id=r.Id AND u.email='"+email+"';";
+			String sql="SELECT email,first_name,last_name,user_name,password FROM user_card u,users r WHERE u.user_id=r.Id AND u.email='"+email+"';";
 			ArrayList<Object> toClient = new ArrayList<Object>();
 			ResultSet resultSet = MySQLConnection.getValueInSqlTable(sql);
 			
